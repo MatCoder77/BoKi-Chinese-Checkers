@@ -1,7 +1,9 @@
 package server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
 	
@@ -32,9 +34,23 @@ public class Server {
 		return instance;
 	}
 	
-	private void listen() {
-		while (true) {
+	private void listenForConnectionRequest() {
+		try {
+			serverSocket = new ServerSocket(port);
 			
+			while (true) {
+				Socket clientSocket = serverSocket.accept();
+				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+				runClientHandler(clientSocket);				
+			}	
+			
+		} catch (Exception e) {
+			//TODO handle exception
 		}
+	}
+
+	public void runClientHandler(Socket clientSocket) {
+		Thread listener = new Thread(new ClientHandler(clientSocket)); //TODO pass ClientHandler arguments when class will be implemented
+		listener.start();
 	}
 }
