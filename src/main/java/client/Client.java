@@ -6,14 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-/**
- * @author Mateusz
- *
- */
-/**
- * @author Mateusz
- *
- */
 public class Client {
 
 	private Socket socket;
