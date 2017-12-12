@@ -63,12 +63,12 @@ public class Client {
 	 * @return true if connection was established, false if some kind of problem
 	 *         occurred
 	 */
-	boolean connect() {
+	public boolean connect() {
 		if (!isConnected()) {
 			try {
 				socket = new Socket(address, port);
-				input = new ObjectInputStream(socket.getInputStream());
 				output = new ObjectOutputStream(socket.getOutputStream());
+				input = new ObjectInputStream(socket.getInputStream());				
 				/*nputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
 				input = new BufferedReader(streamReader);
 				output = new PrintWriter(socket.getOutputStream());*/
@@ -108,9 +108,11 @@ public class Client {
 		return true; //TODO error indicating
 	}
 	
-	void sendRequest(Request request) {
+	public void sendRequest(Request request) {
 		try {
 			output.writeObject(request);
+			output.flush();
+			System.out.println("Sended request");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

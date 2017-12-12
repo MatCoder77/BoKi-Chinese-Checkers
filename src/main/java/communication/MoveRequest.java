@@ -14,15 +14,15 @@ public class MoveRequest implements Request{
 		destination = to;
 	}
 	
-	Point currentPos;
-	Point destination;
+	private Point currentPos;
+	private Point destination;
 	
-	Point getDestination()
+	public Point getDestination()
 	{
 		return destination;
 	}
 	
-	Point getCurrentPosition()
+	public Point getCurrentPosition()
 	{
 		return currentPos;
 	}

@@ -32,7 +32,7 @@ public class Server {
 		return instance;
 	}
 	
-	private void listenForNewConnections() {
+	public void listenForNewConnections() {
 		try {
 			//gameThread = new 
 			while (true) {
@@ -49,6 +49,7 @@ public class Server {
 		//Thread listener = new Thread(new ClientHandler(clientSocket)); //TODO pass ClientHandler arguments when class will be implemented
 		//listener.start();
 		ClientHandler clientHandler = new ClientHandler(clientSocket);
+		clientHandler.run();
 		gameHandler.addPlayer(clientHandler);
 	}
 }
