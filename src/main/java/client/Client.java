@@ -3,28 +3,28 @@ package client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+
+import communication.Request;
 
 public class Client {
 
 	private Socket socket;
 	private Thread serverListener;
-	private BufferedReader input;
-	private PrintWriter output;
+	//private BufferedReader input;
+	private ObjectInputStream input;
+	//private PrintWriter output;
+	private ObjectOutputStream output;
 	private int port;
 	private String address;
 	private boolean connected;
 
-	public Client(String host, int port) {
-		try {
-			socket = new Socket(host, port);
-			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			output = new PrintWriter(socket.getOutputStream(), true);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Client(String address, int port) {
+		this.address = address;
+		this.port = port;
 	}
 
 	/**
@@ -67,9 +67,11 @@ public class Client {
 		if (!isConnected()) {
 			try {
 				socket = new Socket(address, port);
-				InputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
+				input = new ObjectInputStream(socket.getInputStream());
+				output = new ObjectOutputStream(socket.getOutputStream());
+				/*nputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
 				input = new BufferedReader(streamReader);
-				output = new PrintWriter(socket.getOutputStream());
+				output = new PrintWriter(socket.getOutputStream());*/
 
 				// TODO send CONNECT_REQUEST
 
@@ -106,5 +108,12 @@ public class Client {
 		return true; //TODO error indicating
 	}
 	
-	//TODO sendRequest function
+	void sendRequest(Request request) {
+		try {
+			output.writeObject(request);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

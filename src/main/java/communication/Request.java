@@ -1,5 +1,6 @@
 package communication;
 
-public class Request {
+import java.io.Serializable;
 
+public interface Request extends Serializable{
 }
