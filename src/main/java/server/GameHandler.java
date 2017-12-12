@@ -1,6 +1,7 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * @author filipbk
@@ -9,17 +10,26 @@ import java.util.ArrayList;
  */
 public class GameHandler implements Runnable {
 	
-	private ArrayList<ClientHandler> players;
+	private ArrayList<ClientHandler> clients;
 	private Game game;
 	
 	public GameHandler() {
-		players = new ArrayList<ClientHandler>();
+		clients = new ArrayList<ClientHandler>();
 		game = new Game();
 	}
 	
 	public void addPlayer(ClientHandler player) {
-		players.add(player);
+		clients.add(player);
 		System.out.println("Added player");
+	}
+	
+	private void checkAndStart() {
+		if(clients.size() == 2) {
+			for(ClientHandler clientHandler : clients) {
+				Thread thread = new Thread(clientHandler);
+				thread.start();
+			}
+		}
 	}
 
 	@Override
