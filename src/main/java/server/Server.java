@@ -8,18 +8,16 @@ import java.net.Socket;
 public class Server {
 	
 	private static Server instance;
-	private Game game;
 	private ServerSocket serverSocket;
-	private Thread gameThread;
-	private int port;
+	private Thread gameThread;//will be used for gameHandler
+	//private int port;
+	private GameHandler gameHandler;
 	
 
 	private Server (int port) throws IOException {
 		serverSocket = new ServerSocket(port);
+		gameHandler = new GameHandler();
 		System.out.println("Server started");
-		game = new Game();
-		gameThread = new Thread(game);
-		gameThread.start();
 	}
 	
 	public static synchronized Server getInstance(int port) {
@@ -34,13 +32,11 @@ public class Server {
 		return instance;
 	}
 	
-	private void listenForConnectionRequest() {
+	private void listenForNewConnections() {
 		try {
-			serverSocket = new ServerSocket(port);
 			
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
-				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
 				runClientHandler(clientSocket);				
 			}	
 			
@@ -50,7 +46,9 @@ public class Server {
 	}
 
 	public void runClientHandler(Socket clientSocket) {
-		Thread listener = new Thread(new ClientHandler(clientSocket)); //TODO pass ClientHandler arguments when class will be implemented
-		listener.start();
+		//Thread listener = new Thread(new ClientHandler(clientSocket)); //TODO pass ClientHandler arguments when class will be implemented
+		//listener.start();
+		ClientHandler clientHandler = new ClientHandler(clientSocket);
+		gameHandler.addPlayer(clientHandler);
 	}
 }

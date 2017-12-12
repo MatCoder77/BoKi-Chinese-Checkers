@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 import client.Client;
 
-public class Game implements Runnable {
-
-	ArrayList<Client> players;
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+/**
+ * @author filipbk
+ * Class for storing current state of game,
+ * board, etc.
+ *
+ */
+public class Game {
 
 }
 

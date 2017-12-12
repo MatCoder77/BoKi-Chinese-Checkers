@@ -7,7 +7,7 @@ import server.Server;
 public class ServerTest {
 
 	@Test
-	public void test() {
+	public void testInitialization() {
 		Server server = Server.getInstance(9999);
 		assertNotNull(server);
 	}

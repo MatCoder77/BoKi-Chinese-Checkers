@@ -6,6 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * @author filipbk
+ * Class responsible for holding connection
+ * and getting data from client app.
+ *
+ */
 public class ClientHandler implements Runnable {
 	
 	private Socket socket;
