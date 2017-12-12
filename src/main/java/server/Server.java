@@ -34,7 +34,7 @@ public class Server {
 	
 	private void listenForNewConnections() {
 		try {
-			
+			//gameThread = new 
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
 				runClientHandler(clientSocket);				

@@ -46,6 +46,7 @@ public class ClientGUI extends JFrame {
 	private JButton successor;
 	private JButton predecessor;
 	private String command = "";
+	private Client client;
 	
 	public ClientGUI() {
 		createGUI();
@@ -76,14 +77,25 @@ public class ClientGUI extends JFrame {
 		connect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				String host = address_field.getText().toString();
+				int portNum = Integer.parseInt(port_field.getText().toString());
+				client = new Client(host, portNum);
+				if(client.connect() == true) {
+					drawingArea.append("Polaczono\n");
+				} else {
+					drawingArea.append("Nie udalo sie polaczyc\n");
+				}
 			}
 		});
 		login_panel.add(disconnect);
 		disconnect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				if(client.disconnect() == true) {
+					drawingArea.append("Rozlaczono\n");
+				} else {
+					drawingArea.append("Nie udalo sie rozlaczyc\n");
+				}
 			}
 		});
 		setLayout(new GridBagLayout());

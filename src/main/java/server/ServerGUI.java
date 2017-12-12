@@ -30,7 +30,7 @@ public class ServerGUI extends JFrame {
 	private JButton stop;
 	private JButton clearLog;
 	private JButton showConnected;
-	Server server = Server.getInstance(9999);
+	Server server;
 	
 	/**
 	 * Constructs server
@@ -67,6 +67,7 @@ public class ServerGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//TODO
 				ServerGUI.this.addToLog("Uruchomiono serwer...");
+				server = Server.getInstance(9999);
 			}
 		});
 		stop.addActionListener(new ActionListener() {
@@ -74,7 +75,7 @@ public class ServerGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//TODO
-		       ServerGUI.this.addToLog("Zamykanie serwera...");	        
+		       ServerGUI.this.addToLog("Zamykanie serwera...");
 		       ServerGUI.this.addToLog("Zamknięto...");
 				
 			}

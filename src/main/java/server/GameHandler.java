@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Class that holds game session
  *
  */
-public class GameHandler {
+public class GameHandler implements Runnable {
 	
 	private ArrayList<ClientHandler> players;
 	private Game game;
@@ -19,5 +19,12 @@ public class GameHandler {
 	
 	public void addPlayer(ClientHandler player) {
 		players.add(player);
+		System.out.println("Added player");
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }
