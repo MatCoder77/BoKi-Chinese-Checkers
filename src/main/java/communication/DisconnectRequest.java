@@ -16,4 +16,9 @@ public class DisconnectRequest implements Request{
 	public String getClientName() {
 		return clientName;
 	}
+
+	@Override
+	public DisconnectRequest getRequest() {
+		return this;
+	}
 }

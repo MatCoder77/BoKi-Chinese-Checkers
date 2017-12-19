@@ -26,4 +26,9 @@ public class MoveRequest implements Request{
 	{
 		return currentPos;
 	}
+
+	@Override
+	public MoveRequest getRequest() {
+		return this;
+	}
 }

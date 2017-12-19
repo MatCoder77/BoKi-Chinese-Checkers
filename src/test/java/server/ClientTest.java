@@ -6,8 +6,8 @@ import communication.ConnectRequest;
 public class ClientTest {
 	public static void main(String args[]) 
     {
-		Client client = new Client("localhost", 8982);
+		Client client = new Client("localhost", 8988);
 		client.connect();
-		client.sendRequest(new ConnectRequest("Mateusz"));
+		//client.sendRequest(new ConnectRequest("Mateusz"));
     }
 }

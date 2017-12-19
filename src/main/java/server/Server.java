@@ -10,6 +10,7 @@ public class Server {
 	private static Server instance;
 	private ServerSocket serverSocket;
 	private Thread gameThread;//will be used for gameHandler
+	private Thread clientHandlerThread;
 	//private int port;
 	private GameHandler gameHandler;
 	
@@ -50,7 +51,8 @@ public class Server {
 		//Thread listener = new Thread(new ClientHandler(clientSocket)); //TODO pass ClientHandler arguments when class will be implemented
 		//listener.start();
 		ClientHandler clientHandler = new ClientHandler(clientSocket);
-		clientHandler.run();
+		clientHandlerThread = new Thread(clientHandler);
+		clientHandlerThread.start();
 		gameHandler.addPlayer(clientHandler);
 	}
 }

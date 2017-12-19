@@ -68,6 +68,7 @@ public class ServerGUI extends JFrame {
 				//TODO
 				ServerGUI.this.addToLog("Uruchomiono serwer...");
 				server = Server.getInstance(9999);
+				server.listenForNewConnections();
 			}
 		});
 		stop.addActionListener(new ActionListener() {
@@ -91,7 +92,6 @@ public class ServerGUI extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO
 				ServerGUI.this.addToLog("Połączeni użytkownicy: \n");		
 			}
 		});	

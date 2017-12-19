@@ -8,15 +8,14 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import communication.ConnectRequest;
 import communication.Request;
 
 public class Client {
 
 	private Socket socket;
 	private Thread serverListener;
-	//private BufferedReader input;
 	private ObjectInputStream input;
-	//private PrintWriter output;
 	private ObjectOutputStream output;
 	private int port;
 	private String address;
@@ -50,8 +49,7 @@ public class Client {
 	 * from Server
 	 */
 	public void runServerListener() {
-		serverListener = new Thread(new ServerListener()); // TODO add ServerListener arguments when ServerListener will
-															// be implemented
+		serverListener = new Thread(new ServerListener(input)); 
 		serverListener.start();
 	}
 
@@ -74,13 +72,13 @@ public class Client {
 				output = new PrintWriter(socket.getOutputStream());*/
 
 				// TODO send CONNECT_REQUEST
-
+				runServerListener();
+				sendRequest(new ConnectRequest("Mateusz"));
 				setConnected(true);
 			} catch (Exception ex) {
 				// TODO handle exception
 			}
 
-			runServerListener();
 
 		} else {
 			// TODO show message "You're already connected"

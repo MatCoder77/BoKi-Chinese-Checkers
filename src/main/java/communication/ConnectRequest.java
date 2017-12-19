@@ -16,4 +16,9 @@ public class ConnectRequest implements Request{
 	public String getClientName() {
 		return clientName;
 	}
+
+	@Override
+	public ConnectRequest getRequest() {
+		return this;
+	}
 }
