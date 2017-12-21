@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -20,11 +21,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import communication.DisconnectRequest;
+import communication.MoveRequest;
+
 public class ClientGUI extends JFrame {
 	
 	private String user_name = "MatCoder77";
 	private String address = "localhost";
-	private int port = 2222;
+	private int port = 8988;
 	
 
 	private JLabel address_lab;
@@ -79,11 +83,11 @@ public class ClientGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String host = address_field.getText().toString();
 				int portNum = Integer.parseInt(port_field.getText().toString());
-				client = new Client(host, portNum);
+				client = new Client(host, portNum, user_name_field.getText());
 				if(client.connect() == true) {
-					drawingArea.append("Polaczono\n");
+					drawingArea.append("Połączono z serwerem...\n");
 				} else {
-					drawingArea.append("Nie udalo sie polaczyc\n");
+					drawingArea.append("Nie udało się połączyc...\n");
 				}
 			}
 		});
@@ -92,9 +96,9 @@ public class ClientGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(client.disconnect() == true) {
-					drawingArea.append("Rozlaczono\n");
+					drawingArea.append("Rozłączono\n");
 				} else {
-					drawingArea.append("Nie udalo sie rozlaczyc\n");
+					drawingArea.append("Nie udało się rozłączyc\n");
 				}
 			}
 		});
@@ -163,6 +167,7 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				client.disconnect();
 			}
 		});
 
@@ -172,7 +177,8 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				client.sendRequest(new MoveRequest(new Point(3, 7), new Point(4,9)));
+				drawingArea.append("Wykonano ruch...\n");
 			}
 		});
 

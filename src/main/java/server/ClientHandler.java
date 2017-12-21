@@ -26,19 +26,14 @@ import communication.Response;
 public class ClientHandler implements Runnable {
 	
 	private Socket socket;
-	//private BufferedReader input;
-	//private PrintWriter output;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
+	private ServerGUI serverGUI;
 	
 	public ClientHandler(Socket socket) {
 		this.socket = socket;
 		
 		try {
-			//input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			//output = new PrintWriter(socket.getOutputStream(), true);
-			//output.println("Welcome to the game!");
-			System.out.println("W konstruktorze clhandl");
 			output = new ObjectOutputStream(socket.getOutputStream());
 			input = new ObjectInputStream(socket.getInputStream());			
 		} catch (IOException e) {
@@ -48,18 +43,13 @@ public class ClientHandler implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("W run w clhandl");
 		try {
 			Object receivedObject;
 			Class objectType;
 			Request request;
 			String name;
-			while (true) {
-				System.out.println("before");
-				System.out.flush();
-				receivedObject = input.readObject();
-				System.out.println("Request received");
-				System.out.flush();
+			while ((receivedObject = input.readObject()) != null) {
+				
 				objectType = receivedObject.getClass();
 				name = receivedObject.getClass().getName();
 				request = (Request) receivedObject;
@@ -69,29 +59,26 @@ public class ClientHandler implements Runnable {
 				
 				if(receivedObject instanceof ConnectRequest){
 					ConnectRequest r = (ConnectRequest) receivedObject;
-					System.out.println("Handled connectRequest for client " + r.getClientName());
+					serverGUI.addToLog("Połączono użytkownika " + r.getClientName());
 					sendResponse(new ConnectResponse());
 				}
 				
 				else if(receivedObject instanceof DisconnectRequest) {
 					DisconnectRequest r = (DisconnectRequest) receivedObject;
-					System.out.println("Handled disconnectRequest for client " + r.getClientName());
+					serverGUI.addToLog("Rozłączono użytkownika " + r.getClientName());
 				}
 				
 				else if(receivedObject instanceof MoveRequest) {
 					MoveRequest r = (MoveRequest) receivedObject;
-					System.out.println("Handled moveRequest, moved from " + r.getCurrentPosition() + " to " + r.getDestination());				
+					serverGUI.addToLog("Przesunięto z " + r.getCurrentPosition() + " do " + r.getDestination());				
 				}
 				
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO: handle exception
-			System.out.println("Wyjatek");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
 		}
 	}
-	
+	/*
 	private void handleRequest(Object cast) {
 		System.out.println("NIE TAK");
 		System.out.flush();
@@ -114,7 +101,7 @@ public class ClientHandler implements Runnable {
 	void handleRequest(Request request) {
 		System.out.println("NIE TAK");
 	}
-	
+	*/
 	void sendResponse(Response response) {
 		try {
 			output.writeObject(response);
@@ -122,5 +109,9 @@ public class ClientHandler implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	void setServerGUI(ServerGUI serverGUI) {
+		this.serverGUI = serverGUI;
 	}
 }

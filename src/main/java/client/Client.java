@@ -9,21 +9,25 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import communication.ConnectRequest;
+import communication.ConnectResponse;
+import communication.DisconnectRequest;
 import communication.Request;
 
 public class Client {
 
 	private Socket socket;
 	private Thread serverListener;
-	private ObjectInputStream input;
+	private volatile ObjectInputStream input;
 	private ObjectOutputStream output;
 	private int port;
 	private String address;
 	private boolean connected;
+	private String name;
 
-	public Client(String address, int port) {
+	public Client(String address, int port, String name) {
 		this.address = address;
 		this.port = port;
+		this.name = name;
 	}
 
 	/**
@@ -43,13 +47,37 @@ public class Client {
 	private void setConnected(boolean connectionStatus) {
 		connected = connectionStatus;
 	}
+	
+	/**
+	 * Object of this class is created when client makes a connection with server. It works on new thread, 
+	 * and handles Responds received from server.
+	 * 
+	 */
+	class ServerListener implements Runnable {
+		
+		@Override
+		public void run() {
+			Object receivedObject;
+			try {
+				while((receivedObject = input.readObject()) != null) {
+					if(receivedObject instanceof ConnectResponse) {
+						System.out.println("You were succesfully connected");
+					}
+				}
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+			}
+			
+		}
+
+	}
 
 	/**
 	 * Establishes ServerListener for client which will be listening to Responds
 	 * from Server
 	 */
 	public void runServerListener() {
-		serverListener = new Thread(new ServerListener(input)); 
+		serverListener = new Thread(new ServerListener()); 
 		serverListener.start();
 	}
 
@@ -67,13 +95,8 @@ public class Client {
 				socket = new Socket(address, port);
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());				
-				/*nputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
-				input = new BufferedReader(streamReader);
-				output = new PrintWriter(socket.getOutputStream());*/
-
-				// TODO send CONNECT_REQUEST
 				runServerListener();
-				sendRequest(new ConnectRequest("Mateusz"));
+				sendRequest(new ConnectRequest(name));
 				setConnected(true);
 			} catch (Exception ex) {
 				// TODO handle exception
@@ -93,7 +116,7 @@ public class Client {
 	 */
 	boolean disconnect() {
 		if (isConnected()) {
-			//TODO send DISCONNECT_REQUEST
+			sendRequest(new DisconnectRequest(name));
 			try {
 				socket.close();
 			} catch (Exception ex) {
