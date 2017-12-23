@@ -10,9 +10,10 @@ public class Server {
 	private static Server instance;
 	private ServerSocket serverSocket;
 	private Thread gameThread;//will be used for gameHandler
+	private Thread clientHandlerThread;
 	//private int port;
 	private GameHandler gameHandler;
-	
+	private ServerGUI serverGUI; //will be removed
 
 	private Server (int port) throws IOException {
 		serverSocket = new ServerSocket(port);
@@ -32,7 +33,7 @@ public class Server {
 		return instance;
 	}
 	
-	private void listenForNewConnections() {
+	public void listenForNewConnections() {
 		try {
 			gameThread = new Thread(gameHandler);
 			gameThread.start();
@@ -47,9 +48,14 @@ public class Server {
 	}
 
 	public void runClientHandler(Socket clientSocket) {
-		//Thread listener = new Thread(new ClientHandler(clientSocket)); //TODO pass ClientHandler arguments when class will be implemented
-		//listener.start();
 		ClientHandler clientHandler = new ClientHandler(clientSocket);
+		clientHandler.setServerGUI(serverGUI);
+		clientHandlerThread = new Thread(clientHandler);
+		clientHandlerThread.start();
 		gameHandler.addPlayer(clientHandler);
+	}
+	
+	void setServerGUI(ServerGUI serverGUI) {
+		this.serverGUI = serverGUI;
 	}
 }

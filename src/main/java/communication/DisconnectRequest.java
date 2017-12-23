@@ -13,7 +13,12 @@ public class DisconnectRequest implements Request{
 	
 	private String clientName;
 	
-	String getClientName() {
+	public String getClientName() {
 		return clientName;
+	}
+
+	@Override
+	public DisconnectRequest getRequest() {
+		return this;
 	}
 }

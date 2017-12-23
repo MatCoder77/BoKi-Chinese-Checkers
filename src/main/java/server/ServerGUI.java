@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import communication.ConnectResponse;
 
 
 public class ServerGUI extends JFrame {
@@ -30,6 +33,7 @@ public class ServerGUI extends JFrame {
 	private JButton stop;
 	private JButton clearLog;
 	private JButton showConnected;
+	private Thread serverThread;
 	Server server;
 	
 	/**
@@ -37,6 +41,15 @@ public class ServerGUI extends JFrame {
 	 */
 	ServerGUI() {
 		createGUI();
+	}
+	
+	class ServerRunner implements Runnable {
+		
+		@Override
+		public void run() {
+			server.listenForNewConnections();		
+		}
+
 	}
 	
 	/**
@@ -65,9 +78,11 @@ public class ServerGUI extends JFrame {
 		start.addActionListener(new ActionListener() {		
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO
 				ServerGUI.this.addToLog("Uruchomiono serwer...");
-				server = Server.getInstance(9999);
+				server = Server.getInstance(8988);
+				server.setServerGUI(ServerGUI.this);
+				serverThread = new Thread(new ServerRunner());
+				serverThread.start();
 			}
 		});
 		stop.addActionListener(new ActionListener() {
@@ -91,7 +106,6 @@ public class ServerGUI extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO
 				ServerGUI.this.addToLog("Połączeni użytkownicy: \n");		
 			}
 		});	

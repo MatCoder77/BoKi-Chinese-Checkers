@@ -8,23 +8,26 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import communication.ConnectRequest;
+import communication.ConnectResponse;
+import communication.DisconnectRequest;
 import communication.Request;
 
 public class Client {
 
 	private Socket socket;
 	private Thread serverListener;
-	//private BufferedReader input;
-	private ObjectInputStream input;
-	//private PrintWriter output;
+	private volatile ObjectInputStream input;
 	private ObjectOutputStream output;
 	private int port;
 	private String address;
 	private boolean connected;
+	private String name;
 
-	public Client(String address, int port) {
+	public Client(String address, int port, String name) {
 		this.address = address;
 		this.port = port;
+		this.name = name;
 	}
 
 	/**
@@ -44,14 +47,37 @@ public class Client {
 	private void setConnected(boolean connectionStatus) {
 		connected = connectionStatus;
 	}
+	
+	/**
+	 * Object of this class is created when client makes a connection with server. It works on new thread, 
+	 * and handles Responds received from server.
+	 * 
+	 */
+	class ServerListener implements Runnable {
+		
+		@Override
+		public void run() {
+			Object receivedObject;
+			try {
+				while((receivedObject = input.readObject()) != null) {
+					if(receivedObject instanceof ConnectResponse) {
+						System.out.println("You were succesfully connected");
+					}
+				}
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+			}
+			
+		}
+
+	}
 
 	/**
 	 * Establishes ServerListener for client which will be listening to Responds
 	 * from Server
 	 */
 	public void runServerListener() {
-		serverListener = new Thread(new ServerListener()); // TODO add ServerListener arguments when ServerListener will
-															// be implemented
+		serverListener = new Thread(new ServerListener()); 
 		serverListener.start();
 	}
 
@@ -63,24 +89,19 @@ public class Client {
 	 * @return true if connection was established, false if some kind of problem
 	 *         occurred
 	 */
-	boolean connect() {
+	public boolean connect() {
 		if (!isConnected()) {
 			try {
 				socket = new Socket(address, port);
-				input = new ObjectInputStream(socket.getInputStream());
 				output = new ObjectOutputStream(socket.getOutputStream());
-				/*nputStreamReader streamReader = new InputStreamReader(socket.getInputStream());
-				input = new BufferedReader(streamReader);
-				output = new PrintWriter(socket.getOutputStream());*/
-
-				// TODO send CONNECT_REQUEST
-
+				input = new ObjectInputStream(socket.getInputStream());				
+				runServerListener();
+				sendRequest(new ConnectRequest(name));
 				setConnected(true);
 			} catch (Exception ex) {
 				// TODO handle exception
 			}
 
-			runServerListener();
 
 		} else {
 			// TODO show message "You're already connected"
@@ -95,7 +116,7 @@ public class Client {
 	 */
 	boolean disconnect() {
 		if (isConnected()) {
-			//TODO send DISCONNECT_REQUEST
+			sendRequest(new DisconnectRequest(name));
 			try {
 				socket.close();
 			} catch (Exception ex) {
@@ -108,9 +129,11 @@ public class Client {
 		return true; //TODO error indicating
 	}
 	
-	void sendRequest(Request request) {
+	public void sendRequest(Request request) {
 		try {
 			output.writeObject(request);
+			output.flush();
+			System.out.println("Sended request");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
