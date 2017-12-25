@@ -1,19 +1,18 @@
 package board;
 
+/**
+ * @author filipbk
+ * Class that stores information about a single board field
+ *
+ */
 public class Field {
 
 	private boolean empty;
 	private String fieldType; //is center, corner or over the board
 	
-	public Field(String fieldType) {
+	public Field(String fieldType, boolean empty) {
 		this.fieldType = fieldType;
-		
-		if(fieldType.equals("C")) {
-			this.setEmpty();
-		}
-		else {
-			this.setTaken();
-		}
+		this.empty = empty;
 	}
 	
 	public boolean isEmpty() {
