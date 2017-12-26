@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import communication.DisconnectRequest;
 import communication.MoveRequest;
+import communication.StartFastGameRequest;
 
 public class ClientGUI extends JFrame {
 	
@@ -157,7 +158,7 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				client.sendRequest(new StartFastGameRequest(user_name_field.getText()));
 			}
 		});
 

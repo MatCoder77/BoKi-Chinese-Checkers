@@ -12,6 +12,7 @@ import communication.ConnectRequest;
 import communication.ConnectResponse;
 import communication.DisconnectRequest;
 import communication.Request;
+import communication.Response;
 
 public class Client {
 
@@ -57,12 +58,16 @@ public class Client {
 		
 		@Override
 		public void run() {
+			ResponseHandler handler = new ResponseHandler();
 			Object receivedObject;
+			Response response;
 			try {
 				while((receivedObject = input.readObject()) != null) {
-					if(receivedObject instanceof ConnectResponse) {
-						System.out.println("You were succesfully connected");
-					}
+					response = (Response) receivedObject;
+					response.accept(handler);
+//					if(receivedObject instanceof ConnectResponse) {
+//						System.out.println("You were succesfully connected");
+//					}
 				}
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block

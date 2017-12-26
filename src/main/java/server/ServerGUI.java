@@ -79,7 +79,7 @@ public class ServerGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ServerGUI.this.addToLog("Uruchomiono serwer...");
-				server = Server.getInstance(8988);
+				server = Server.getInstance();
 				server.setServerGUI(ServerGUI.this);
 				serverThread = new Thread(new ServerRunner());
 				serverThread.start();

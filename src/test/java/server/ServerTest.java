@@ -8,7 +8,7 @@ public class ServerTest {
 
 	@Test
 	public void testInitialization() {
-		Server server = Server.getInstance(9999);
+		Server server = Server.getInstance();
 		assertNotNull(server);
 	}
 

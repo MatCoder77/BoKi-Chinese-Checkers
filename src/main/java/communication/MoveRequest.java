@@ -2,33 +2,25 @@ package communication;
 
 import java.awt.Point;
 
-public class MoveRequest implements Request{
+public class MoveRequest extends Request{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1966688589128685396L;
+	private Point oldPos;
+	private Point newPos;
 	
 	public MoveRequest(Point from, Point to) {
-		currentPos = from;
-		destination = to;
+		oldPos = from;
+		newPos = to;
 	}
 	
-	private Point currentPos;
-	private Point destination;
-	
-	public Point getDestination()
+	public Point getNewPos()
 	{
-		return destination;
+		return newPos;
 	}
 	
-	public Point getCurrentPosition()
+	public Point getOldPos()
 	{
-		return currentPos;
+		return oldPos;
 	}
-
-	@Override
-	public MoveRequest getRequest() {
-		return this;
-	}
+	
 }
