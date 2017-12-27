@@ -1,15 +1,11 @@
 package client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 import communication.ConnectRequest;
-import communication.ConnectResponse;
 import communication.DisconnectRequest;
 import communication.Request;
 import communication.Response;
@@ -24,11 +20,21 @@ public class Client {
 	private String address;
 	private boolean connected;
 	private String name;
+	private int ID;
+	private ClientGUI clientGUI;
 
 	public Client(String address, int port, String name) {
 		this.address = address;
 		this.port = port;
 		this.name = name;
+	}
+	
+	void setClientGUI(ClientGUI clientGUI) {
+		this.clientGUI = clientGUI;
+	}
+	
+	ClientGUI getClientGUI() {
+		return clientGUI;
 	}
 
 	/**
@@ -59,6 +65,7 @@ public class Client {
 		@Override
 		public void run() {
 			ResponseHandler handler = new ResponseHandler();
+			handler.setClient(Client.this);
 			Object receivedObject;
 			Response response;
 			try {
@@ -143,5 +150,9 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	void setClientID(int clientID) {
+		this.ID = clientID;
 	}
 }

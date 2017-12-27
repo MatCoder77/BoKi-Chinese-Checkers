@@ -1,21 +1,12 @@
 package server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.hamcrest.core.IsInstanceOf;
-
-import communication.ConnectRequest;
-import communication.ConnectResponse;
-import communication.DisconnectRequest;
-import communication.MoveRequest;
 import communication.Request;
 import communication.Response;
 
@@ -26,18 +17,20 @@ import communication.Response;
  */
 public class ClientHandler implements Runnable {
 	
+	private static AtomicInteger clientCounter = new AtomicInteger(0);
 	private Socket socket;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	private GameHandler game;
 	private BlockingQueue<Request> requestQueue;
+	private ClientInfo clientInfo;
 	
 	public ClientHandler(Socket socket) {
 		this.socket = socket;
-		
+		clientInfo = new ClientInfo(clientCounter.getAndIncrement());
 		try {
 			output = new ObjectOutputStream(socket.getOutputStream());
-			input = new ObjectInputStream(socket.getInputStream());			
+			input = new ObjectInputStream(socket.getInputStream());		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -58,9 +51,11 @@ public class ClientHandler implements Runnable {
 		}
 	}
 
-	void sendResponse(Response response) {
+	synchronized void sendResponse(Response response) {
 		try {
+			output.reset();
 			output.writeObject(response);
+			output.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,5 +65,9 @@ public class ClientHandler implements Runnable {
 	void setGameHandler(GameHandler game) {
 		this.game = game;
 		this.requestQueue = game.getRequestQueue();
+	}
+	
+	ClientInfo getClientInfo() {
+		return clientInfo;
 	}
 }

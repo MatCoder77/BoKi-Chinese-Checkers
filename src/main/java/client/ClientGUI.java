@@ -9,10 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -21,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import communication.DisconnectRequest;
+import communication.EndTurnRequest;
 import communication.MoveRequest;
 import communication.StartFastGameRequest;
 
@@ -85,6 +81,7 @@ public class ClientGUI extends JFrame {
 				String host = address_field.getText().toString();
 				int portNum = Integer.parseInt(port_field.getText().toString());
 				client = new Client(host, portNum, user_name_field.getText());
+				client.setClientGUI(ClientGUI.this);
 				if(client.connect() == true) {
 					drawingArea.append("Połączono z serwerem...\n");
 				} else {
@@ -179,7 +176,7 @@ public class ClientGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				client.sendRequest(new MoveRequest(new Point(3, 7), new Point(4,9)));
-				drawingArea.append("Wykonano ruch...\n");
+				addToLog("Sent moveRequest");
 			}
 		});
 
@@ -189,8 +186,7 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-
+				client.sendRequest(new EndTurnRequest());
 			}
 		});
 
@@ -238,6 +234,18 @@ public class ClientGUI extends JFrame {
 
 		setVisible(true);
 
+	}
+	
+	void addToLog(String msg) {
+		drawingArea.append(msg + '\n'); 
+	}
+	
+	void moveButtonActive(boolean state) {
+		search.setEnabled(state);
+	}
+	
+	void endTurnButtonActive(boolean state) {
+		max.setEnabled(state);
 	}
 	
 	public static void main(String args[]) {

@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import server.GameInfo.BoardSize;
+import server.GameType.BoardSize;
 
 public class Server {
 	
@@ -63,8 +63,8 @@ public class Server {
 		return serverGUI;
 	}
 	
-	GameHandler runGameHandler(GameInfo gameInfo, ClientHandler creator) {
-		GameHandler gameHandler = new GameHandler(gameInfo, creator);
+	GameHandler runGameHandler(GameType gameType, ClientHandler creator) {
+		GameHandler gameHandler = new GameHandler(gameType, creator);
 		Thread gameThread = new Thread(gameHandler);
 		gameHandler.setGameThread(gameThread);
 		gameHandlers.add(gameHandler);
@@ -82,7 +82,7 @@ public class Server {
 			}
 		}
 		
-		return runGameHandler(new GameInfo().setBoardSize(BoardSize.STANDARD).setPlayersNumber(2), client); //CHANE IT
+		return runGameHandler(new GameType().setBoardSize(BoardSize.STANDARD).setPlayersNumber(3), client); //CHANE IT
 	}
 	
 	boolean joinToGame(GameHandler game, ClientHandler client) {

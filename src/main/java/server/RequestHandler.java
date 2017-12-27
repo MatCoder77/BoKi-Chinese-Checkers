@@ -10,6 +10,7 @@ import communication.EndTurnRequest;
 import communication.LeaveGameRequest;
 import communication.MoveRequest;
 import communication.StartFastGameRequest;
+import communication.StartFastGameResponse;
 import communication.StartGameRequest;
 import communication.StartTurnRequest;
 
@@ -22,14 +23,15 @@ import communication.StartTurnRequest;
 public class RequestHandler extends CommandHandler {
 
 	private ClientHandler clientHandler;
-	private GameHandler gameHandler;
+	private volatile GameHandler gameHandler;
 	public RequestHandler(ClientHandler clientHandler) {
 		this.clientHandler = clientHandler;
 		this.gameHandler = null;
 	} 
 	
 	public void handle(ConnectRequest request) {
-		clientHandler.sendResponse(new ConnectResponse());
+		clientHandler.getClientInfo().setName(request.getClientName());
+		clientHandler.sendResponse(new ConnectResponse(clientHandler.getClientInfo().getID()));
 		Server.getInstance().getServerGUI().addToLog("Połączono użytkownika " + request.getClientName());
 	}
 
@@ -51,6 +53,7 @@ public class RequestHandler extends CommandHandler {
 		Server.getInstance().getServerGUI().addToLog("Otrzymano zapytanie StartFastGame od " + request.getClient());
 		gameHandler = Server.getInstance().runFastGame(clientHandler);
 		clientHandler.setGameHandler(gameHandler);
+		clientHandler.sendResponse(new StartFastGameResponse(gameHandler.getGameInfo().getID(), gameHandler.getGameInfo().getName(), gameHandler.getGameInfo().getType(), gameHandler.getGameInfo().getState(), gameHandler.getGameInfo().getConnectedClientsInfo()));
 	}
 
 	public void handle(StartGameRequest request) {
