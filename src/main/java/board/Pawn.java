@@ -11,11 +11,13 @@ import java.awt.Point;
 public class Pawn {
 	
 	private Point location;
+	private Point lastLocation;
 	private String target;
 	private boolean isInTarget;
 	
 	public Pawn(Point coords, String target) {
 		this.location = coords;
+		this.lastLocation = coords;
 		this.target = target;
 		this.isInTarget = false;
 	}
@@ -42,6 +44,14 @@ public class Pawn {
 	
 	public void setTarget(String target) {
 		this.target = target;
+	}
+	
+	public Point getLastLocation() {
+		return lastLocation;
+	}
+	
+	public void setLastLocation(Point lastLocation) {
+		this.lastLocation = lastLocation;
 	}
 
 }

@@ -120,10 +120,10 @@ public class Game {
 			return false;
 		}
 		
-		if(board[x][y].isEmpty() == true && pawn.isInTarget() == false) {
+		if(board[x][y].isEmpty() == true && pawn.isInTarget() == false && (new Point(x, y)).equals(pawn.getLastLocation()) == false) {
 			return true;
 		}
-		else if(board[x][y].isEmpty() == true && board[x][y].getFieldType().equals(pawn.getTarget()) == true) {
+		else if(board[x][y].isEmpty() == true && board[x][y].getFieldType().equals(pawn.getTarget()) == true && (new Point(x, y)).equals(pawn.getLastLocation()) == false) {
 			return true;
 		}
 		else {
@@ -148,9 +148,11 @@ public class Game {
 	}
 	
 	public void move(Pawn pawn, Point destination) {
+		Point lastLocation = pawn.getLocation();
 		board[pawn.getLocation().x][pawn.getLocation().y].setEmpty();
 		board[destination.x][destination.y].setTaken();
 		pawn.setLocation(destination);
+		pawn.setLastLocation(lastLocation);
 		
 		if(board[destination.x][destination.y].getFieldType().equals(pawn.getTarget())) {
 			pawn.setInTarget();
