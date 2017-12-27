@@ -15,6 +15,7 @@ public class GameTest {
 	public void testGameBoard() {
 		Game game = new Game(new BoardSixSix());
 		Pawn pawn = new Pawn(new Point(5, 5), "2");
+		pawn.setLastLocation(new Point(4, 4));
 		System.out.println(game.checkValidMoves(pawn).size());
 		Pawn pawn1 = new Pawn(new Point(14, 11), "6");
 		//pawn1.setInTarget();
