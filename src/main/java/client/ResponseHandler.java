@@ -5,8 +5,11 @@ import communication.CommandHandler;
 import communication.ConnectResponse;
 import communication.DisconnectResponse;
 import communication.EndTurnResponse;
+import communication.GameStartedResponse;
 import communication.LeaveGameResponse;
 import communication.MoveResponse;
+import communication.SomeoneJoinedResponse;
+import communication.SomeoneLeftResponse;
 import communication.StartFastGameResponse;
 import communication.StartFastGameResponse.GameState;
 import communication.StartGameResponse;
@@ -17,7 +20,7 @@ public class ResponseHandler extends CommandHandler {
 
 	Client client;
 	
-	void setClient(Client client) {
+	public ResponseHandler(Client client) {
 		this.client = client;
 	}
 	
@@ -63,12 +66,24 @@ public class ResponseHandler extends CommandHandler {
 		}
 	}
 	
-	void handle(StartGameResponse response) {
+	public void handle(SomeoneJoinedResponse response) {
+		client.getClientGUI().addToLog("User " + response.getClientInfo().getName() + ", ID: " + response.getClientInfo().getID() + " joined your game");
+	}
+	
+	public void handle(SomeoneLeftResponse response) {
+		client.getClientGUI().addToLog("User " + response.getClientInfo().getName() + ", ID: " + response.getClientInfo().getID() + " left game");
+	}
+	
+	public void handle(GameStartedResponse repsonse) {
+		client.getClientGUI().addToLog("GAME STARTED");
+	}
+	
+	public void handle(StartGameResponse response) {
 		
 	}
 	
-	void handle(LeaveGameResponse response) {
-		
+	public void handle(LeaveGameResponse response) {
+		client.getClientGUI().addToLog("You left game");
 	}
 	
 	@Override

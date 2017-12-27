@@ -64,8 +64,7 @@ public class Client {
 		
 		@Override
 		public void run() {
-			ResponseHandler handler = new ResponseHandler();
-			handler.setClient(Client.this);
+			ResponseHandler handler = new ResponseHandler(Client.this);
 			Object receivedObject;
 			Response response;
 			try {

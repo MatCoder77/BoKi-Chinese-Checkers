@@ -49,6 +49,11 @@ public class GameInfo implements Serializable{
 		return this;
 	}
 	
+	GameInfo removeClientInfo(ClientInfo info) {
+		connectedClientsInfo.remove(info);
+		return this;
+	}
+	
 	int getID() {
 		return ID;
 	}

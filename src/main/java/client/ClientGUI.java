@@ -18,6 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import communication.EndTurnRequest;
+import communication.LeaveGameRequest;
 import communication.MoveRequest;
 import communication.StartFastGameRequest;
 
@@ -165,7 +166,7 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				client.disconnect();
+				client.sendRequest(new LeaveGameRequest());
 			}
 		});
 

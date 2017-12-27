@@ -8,6 +8,7 @@ import communication.DisconnectRequest;
 import communication.DisconnectResponse;
 import communication.EndTurnRequest;
 import communication.LeaveGameRequest;
+import communication.LeaveGameResponse;
 import communication.MoveRequest;
 import communication.StartFastGameRequest;
 import communication.StartFastGameResponse;
@@ -62,8 +63,10 @@ public class RequestHandler extends CommandHandler {
 	}
 
 	public void handle(LeaveGameRequest request) {
-		// TODO Auto-generated method stub
-		
+		Server.getInstance().getServerGUI().addToLog("Użytkownik " + clientHandler.getClientInfo().getName() + ", ID: " + clientHandler.getClientInfo().getID()
+				+ " opuszcza grę " + gameHandler.getGameInfo().getName() + ", ID: " + gameHandler.getGameInfo().getID());
+		gameHandler.removeClient(clientHandler);
+		clientHandler.sendResponse(new LeaveGameResponse());
 	}
 	
 	public void handle(StartTurnRequest request) {

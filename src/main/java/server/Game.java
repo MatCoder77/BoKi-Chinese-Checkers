@@ -159,5 +159,10 @@ public class Game {
 		}
 	}
 	
+	enum GameState {PENDING, ENDDED};
+	
+	GameState getState() {
+		return GameState.PENDING; //CHANGE IT
+	}
 }
 
