@@ -6,6 +6,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import board.BoardSixSix;
 import communication.GameStartedResponse;
 import communication.MoveRequest;
 import communication.Request;
@@ -90,6 +91,11 @@ public class GameHandler implements Runnable {
 	}
 
 	void createGame() {
+		int playersNum = getExpectedClientsNumber();
+		
+		if(playersNum == 6) {
+			game = new Game(new BoardSixSix());
+		}
 
 	}
 

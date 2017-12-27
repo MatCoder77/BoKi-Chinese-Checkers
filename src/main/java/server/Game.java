@@ -16,10 +16,9 @@ public class Game {
 	
 	private Field board[][];
 	private int boardHeight, boardWidth;
-	
-	public Game() {
-		// TODO Will be removed after changes in GameHandler
-	}
+	private int[] corners;
+	private int currentPlayer;
+	private ArrayList<Player> players;
 	
 	/**
 	 * @param boardType type of board to set
@@ -28,9 +27,13 @@ public class Game {
 	public Game(BoardType boardType) {
 		String[][] tmpBoard = boardType.getBoard();
 		boolean[][] tmpEmpty = boardType.getBoardEmpty();
+		
+		this.currentPlayer = 0;
 		this.boardHeight = tmpBoard.length;
 		this.boardWidth = tmpBoard[0].length;
 		this.board = new Field[boardHeight][boardWidth];
+		this.corners = boardType.getCorners();
+		this.players = new ArrayList<>();
 		
 		for(int i = 0; i < tmpBoard.length; i++) {
 			for(int j = 0; j < tmpBoard[i].length; j++) {
@@ -41,11 +44,37 @@ public class Game {
 		}
 	}
 	
+	public void addPlayer() {
+		Player player = new Player(currentPlayer, corners[currentPlayer]);
+		player.setPawns(getPawns(corners[currentPlayer]));
+		players.add(player);
+		currentPlayer++;
+	}
+	
+	public ArrayList<Point> checkValidMoves(int clientIndex, Point point) {
+		Pawn tmpPawn = null;
+		ArrayList<Pawn> tmpPawns = null;
+		for(Player pl : players) {
+			if(pl.getClientID() == clientIndex) {
+				tmpPawns = pl.getPawns();
+			}
+		}
+		
+		for(Pawn pa : tmpPawns) {
+			if(pa.getLocation().equals(point)) {
+				tmpPawn = pa;
+			}
+		}
+		
+		return checkValidMoves(tmpPawn);
+	}
+	
 	/**
 	 * @param pawn pawn to check
 	 * @return ArrayList of Point with possible moves
 	 */
 	public ArrayList<Point> checkValidMoves(Pawn pawn) {
+		// TODO Will be changed to private
 		ArrayList<Point> validMoves = new ArrayList<>();
 		int x = pawn.getLocation().x;
 		int y = pawn.getLocation().y;
@@ -131,7 +160,7 @@ public class Game {
 		}
 	}
 	
-	public ArrayList<Pawn> getPawns(int corner) {
+	private ArrayList<Pawn> getPawns(int corner) {
 		String clientCorner = Integer.toString(corner);
 		ArrayList<Pawn> pawns = new ArrayList<>();
 		String target = Integer.toString((corner + 3) % 6);
@@ -147,7 +176,25 @@ public class Game {
 		return pawns;
 	}
 	
+	public void move(int clientIndex, Point from, Point to) {
+		Pawn tmpPawn = null;
+		ArrayList<Pawn> tmpPawns = null;
+		for(Player pl : players) {
+			if(pl.getClientID() == clientIndex) {
+				tmpPawns = pl.getPawns();
+			}
+		}
+		
+		for(Pawn pa : tmpPawns) {
+			if(pa.getLocation().equals(from)) {
+				tmpPawn = pa;
+			}
+		}
+		move(tmpPawn, to);
+	}
+	
 	public void move(Pawn pawn, Point destination) {
+		// TODO Will be changed to private
 		Point lastLocation = pawn.getLocation();
 		board[pawn.getLocation().x][pawn.getLocation().y].setEmpty();
 		board[destination.x][destination.y].setTaken();
@@ -161,8 +208,13 @@ public class Game {
 	
 	enum GameState {PENDING, ENDDED};
 	
-	GameState getState() {
-		return GameState.PENDING; //CHANGE IT
+	public GameState getState() {
+		for(Player pl : players) {
+			if(!pl.hasFinished()) {
+				return GameState.PENDING;
+			}
+		}
+		return GameState.ENDDED;
 	}
 }
 

@@ -9,5 +9,6 @@ public interface BoardType {
 
 	public String[][] getBoard();
 	public boolean[][] getBoardEmpty();
+	public int[] getCorners();
 	
 }

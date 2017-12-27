@@ -43,6 +43,8 @@ public class BoardSixSix implements BoardType {
 										{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
 										{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false} };
 	
+	private final int[] corners = {1, 2, 3, 4, 5, 6};
+	
 	@Override
 	public String[][] getBoard() {
 		return board;
@@ -52,5 +54,12 @@ public class BoardSixSix implements BoardType {
 	public boolean[][] getBoardEmpty() {
 		return empty;
 	}
+
+	@Override
+	public int[] getCorners() {
+		return corners;
+	}
+	
+	
 	
 }

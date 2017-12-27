@@ -22,8 +22,9 @@ public class GameTest {
 		System.out.println(game.checkValidMoves(pawn1).size());
 		Pawn pawn2 = new Pawn(new Point(12, 16), "6");
 		System.out.println(game.checkValidMoves(pawn2).size());
-		ArrayList<Pawn> pawns = game.getPawns(1);
-		assertTrue(pawns.size() == 10);
+		game.addPlayer();
+		ArrayList<Point> moves = game.checkValidMoves(0, new Point(2, 5));
+		assertTrue(moves.size() == 2);
 	}
 	
 	@Test
