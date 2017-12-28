@@ -44,7 +44,7 @@ public class ResponseHandler extends CommandHandler {
 			client.getClientGUI().endTurnButtonActive(true);
 			client.getClientGUI().moveButtonActive(true);
 		} else {
-			client.getClientGUI().addToLog(response.getClientInfo().getName() + "started turn");
+			client.getClientGUI().addToLog(response.getClientInfo().getName() + " started turn");
 		}
 	}
 
