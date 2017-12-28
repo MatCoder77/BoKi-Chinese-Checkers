@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import communication.GameplayRequest;
 import communication.Request;
 import communication.Response;
 
@@ -22,12 +23,14 @@ public class ClientHandler implements Runnable {
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	private GameHandler game;
-	private BlockingQueue<Request> requestQueue;
+	private BlockingQueue<GameplayRequest> requestQueue;
 	private ClientInfo clientInfo;
 	
 	public ClientHandler(Socket socket) {
 		this.socket = socket;
 		clientInfo = new ClientInfo(clientCounter.getAndIncrement());
+		game = null;
+		requestQueue = null;
 		try {
 			output = new ObjectOutputStream(socket.getOutputStream());
 			input = new ObjectInputStream(socket.getInputStream());		
@@ -69,5 +72,11 @@ public class ClientHandler implements Runnable {
 	
 	ClientInfo getClientInfo() {
 		return clientInfo;
+	}
+	
+	boolean isPlayingGame() {
+		if(game != null)
+			return true;
+		return false;
 	}
 }

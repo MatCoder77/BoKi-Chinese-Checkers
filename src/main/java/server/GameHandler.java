@@ -7,10 +7,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import board.BoardSixSix;
+import communication.Command;
+import communication.CommandHandler;
 import communication.EndTurnRequest;
 import communication.EndTurnResponse;
 import communication.GameEndedResponse;
 import communication.GameStartedResponse;
+import communication.GameplayRequest;
 import communication.MoveRequest;
 import communication.MoveResponse;
 import communication.PossibleMovesRequest;
@@ -27,11 +30,14 @@ import communication.WinResponse;
 public class GameHandler implements Runnable {
 
 	private ArrayList<ClientHandler> clients;
-	private BlockingQueue<Request> receivedRequests;
+	private BlockingQueue<GameplayRequest> receivedRequests;
 	private Thread gameThread;
 	private volatile GameInfo gameInfo;
 	private Game game;
 	private static AtomicInteger gameCounter = new AtomicInteger(0);
+	private ClientHandler currentClient;
+	int currentPlayerID;
+	private boolean turnEnded = false;
 
 	public GameHandler(GameType gameType, ClientHandler creator) {
 		clients = new ArrayList<>();
@@ -62,25 +68,32 @@ public class GameHandler implements Runnable {
 	}
 
 	public void addClient(ClientHandler client) {
-		// clients.add(client);
-		// gameInfo.addClientInfo(client.getClientInfo());
 		notifyClients(new SomeoneJoinedResponse(client.getClientInfo()));
 		clients.add(client);
 		gameInfo.addClientInfo(client.getClientInfo());
-
+		
 		if (!waitsForPlayers()) {
 			gameInfo.setState(GameState.STERTED);
 			gameThread.start();
 		}
-		// notifyClients(new StartFastGameResponse(gameInfo.getID(), gameInfo.getName(),
-		// gameInfo.getType(), gameInfo.getState(),
-		// gameInfo.getConnectedClientsInfo()));
+	}
+
+	boolean gameStarted() {
+		if (game != null && game.getState() == Game.GameState.PENDING)
+			return true;
+		return false;
 	}
 
 	public void removeClient(ClientHandler client) {
+		int i = clients.indexOf(client);
 		clients.remove(client);
 		gameInfo.removeClientInfo(client.getClientInfo());
 		notifyClients(new SomeoneLeftResponse(client.getClientInfo()));
+		if (gameStarted() && !game.getPlayer(i).hasFinished()) {
+			notifyClients(new GameEndedResponse());
+			Server.getInstance().removeGameHandler(this);
+			gameThread.interrupt();
+		}
 	}
 
 	void notifyClients(Response response) {
@@ -89,7 +102,7 @@ public class GameHandler implements Runnable {
 		}
 	}
 
-	BlockingQueue<Request> getRequestQueue() {
+	BlockingQueue<GameplayRequest> getRequestQueue() {
 		return receivedRequests;
 	}
 
@@ -110,44 +123,69 @@ public class GameHandler implements Runnable {
 
 	}
 
+	void endTurn() {
+		turnEnded = true;
+	}
+
+	boolean isTurnEnded() {
+		if (turnEnded) {
+			turnEnded = false;
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void run() {
 		createGame();
-		Request request;
-		MoveRequest moveRequest;
-		PossibleMovesRequest possibleMovesRequest;
-		ClientHandler client;
+		GameplayRequest request;
+		GameplayRequestHandler handler = new GameplayRequestHandler();
 		notifyClients(new GameStartedResponse());
 		for (int i = 0; game.getState() == Game.GameState.PENDING; i = (++i % clients.size())) {
-			if(game.getPlayer(i).hasFinished())
+			if (game.getPlayer(i).hasFinished())
 				continue;
-			client = clients.get(i);
-			notifyClients(new StartTurnResponse(client.getClientInfo()));
+			currentClient = clients.get(i);
+			currentPlayerID = i;
+			notifyClients(new StartTurnResponse(currentClient.getClientInfo()));
 			try {
-				while((request = receivedRequests.take()) != null) {
-					if(request instanceof EndTurnRequest)
-						break;
-					
-					else if(request instanceof PossibleMovesRequest) {
-						possibleMovesRequest = (PossibleMovesRequest) request;
-						client.sendResponse(new PossibleMovesResponse(game.checkValidMoves(i, possibleMovesRequest.getPawnPos())));
-					}
-					
-					else if(request instanceof MoveRequest) {
-						moveRequest = (MoveRequest) request;
-						game.move(i, moveRequest.getOldPos(), moveRequest.getNewPos());
-						notifyClients(new MoveResponse(client.getClientInfo(), moveRequest.getOldPos(), moveRequest.getNewPos()));
-						if(game.getPlayer(i).hasFinished()) {
-							notifyClients(new WinResponse(client.getClientInfo()));
-						}
-					}
+				while (((request = receivedRequests.take()) != null) && !isTurnEnded()) {
+					request.accept(handler);
 				}
-				notifyClients(new EndTurnResponse(client.getClientInfo()));
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return;
 			}
 		}
 		notifyClients(new GameEndedResponse());
+		Server.getInstance().removeGameHandler(this);
+	}
+
+	public class GameplayRequestHandler extends CommandHandler {
+
+		public void handle(PossibleMovesRequest request) {
+			currentClient.sendResponse(
+					new PossibleMovesResponse(game.checkValidMoves(currentPlayerID, request.getPawnPos())));
+		}
+
+		public void handle(MoveRequest request) {
+			game.move(currentPlayerID, request.getOldPos(), request.getNewPos());
+			notifyClients(new MoveResponse(currentClient.getClientInfo(), request.getOldPos(), request.getNewPos()));
+			if (game.getPlayer(currentPlayerID).hasFinished()) {
+				notifyClients(new WinResponse(currentClient.getClientInfo()));
+			}
+		}
+
+		public void handle(EndTurnRequest request) {
+			notifyClients(new EndTurnResponse(currentClient.getClientInfo()));
+			endTurn();
+		}
+
+		@Override
+		public void defaultHandle(Command command) {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
 }

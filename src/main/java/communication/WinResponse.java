@@ -14,7 +14,7 @@ public class WinResponse extends Response{
 		this.winner = winner;
 	}
 	
-	ClientInfo getWinner() {
+	public ClientInfo getWinner() {
 		return winner;
 	}
 	

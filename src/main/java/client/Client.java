@@ -154,4 +154,8 @@ public class Client {
 	void setClientID(int clientID) {
 		this.ID = clientID;
 	}
+	
+	int getID() {
+		return ID;
+	}
 }

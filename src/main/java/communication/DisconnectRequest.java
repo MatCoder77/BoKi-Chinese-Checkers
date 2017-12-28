@@ -1,5 +1,9 @@
 package communication;
-
+/**
+ * 
+ * @author Mateusz
+ *
+ */
 public class DisconnectRequest extends Request{
 
 	private static final long serialVersionUID = -6479705954524094648L;

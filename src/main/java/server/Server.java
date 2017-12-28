@@ -55,6 +55,14 @@ public class Server {
 		clientHandlerThread.start();
 	}
 	
+	public void removeClientHandler(ClientHandler clientHandler) {
+		clientHandlers.remove(clientHandler);
+	}
+	
+	public void removeGameHandler(GameHandler gameHandler) {
+		gameHandlers.remove(gameHandler);
+	}
+	
 	void setServerGUI(ServerGUI serverGUI) {
 		this.serverGUI = serverGUI;
 	}

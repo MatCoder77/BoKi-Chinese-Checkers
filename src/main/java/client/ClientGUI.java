@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import communication.EndTurnRequest;
 import communication.LeaveGameRequest;
 import communication.MoveRequest;
+import communication.PossibleMovesRequest;
 import communication.StartFastGameRequest;
 
 public class ClientGUI extends JFrame {
@@ -122,7 +123,7 @@ public class ClientGUI extends JFrame {
 		control_panel = new JPanel(new GridBagLayout());
 		JPanel input_panel = new JPanel(new FlowLayout());
 		input_panel.add(new JLabel("Wprowadz komende:"));
-		input_field = new JTextField(30);
+		input_field = new JTextField(10);
 		input_panel.add(input_field);
 		GridBagConstraints gbc2 = new GridBagConstraints();
 		gbc2.fill = GridBagConstraints.BOTH;
@@ -191,12 +192,13 @@ public class ClientGUI extends JFrame {
 			}
 		});
 
-		min = new JButton("Cofnij");
+		min = new JButton("Pobierz ruchy");
 		options_panel.add(min);
 		min.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				//client.sendRequest(new PossibleMovesRequest(pawnPos));
 			}
 		});
 

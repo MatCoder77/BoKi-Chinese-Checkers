@@ -2,7 +2,7 @@ package communication;
 
 import java.awt.Point;
 
-public class PossibleMovesRequest extends Request{
+public class PossibleMovesRequest extends GameplayRequest{
 
 	private static final long serialVersionUID = 3053151431355666421L;
 	Point pawnPos;
