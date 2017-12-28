@@ -22,6 +22,7 @@ public class Client {
 	private String name;
 	private int ID;
 	private ClientGUI clientGUI;
+	private FastGameController fastGame;
 
 	public Client(String address, int port, String name) {
 		this.address = address;
@@ -157,5 +158,10 @@ public class Client {
 	
 	int getID() {
 		return ID;
+	}
+	
+	public void setFastGame(FastGameController fastGame) {
+		this.fastGame = fastGame;
+		this.fastGame.setInfoFromServer("Hello world");
 	}
 }
