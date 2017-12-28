@@ -96,6 +96,10 @@ public class GameHandler implements Runnable {
 		if(playersNum == 6) {
 			game = new Game(new BoardSixSix());
 		}
+		
+		for(ClientHandler cl : clients) {
+			game.addPlayer();
+		}
 
 	}
 
