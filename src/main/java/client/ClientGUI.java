@@ -40,7 +40,10 @@ public class ClientGUI extends JFrame {
 	private JButton disconnect;
 	private JTextArea drawingArea;
 	private JPanel control_panel;
-	private JTextField input_field;
+	private JTextField input_fieldFX;
+	private JTextField input_fieldFY;
+	private JTextField input_fieldTX;
+	private JTextField input_fieldTY;
 	private JButton insert;
 	private JButton delete;
 	private JButton search;
@@ -123,8 +126,18 @@ public class ClientGUI extends JFrame {
 		control_panel = new JPanel(new GridBagLayout());
 		JPanel input_panel = new JPanel(new FlowLayout());
 		input_panel.add(new JLabel("Wprowadz komende:"));
-		input_field = new JTextField(10);
-		input_panel.add(input_field);
+		input_fieldFX = new JTextField(10);
+		input_fieldFX.setText("FX");
+		input_fieldFY = new JTextField(10);
+		input_fieldFY.setText("FY");
+		input_fieldTX = new JTextField(10);
+		input_fieldTX.setText("TX");
+		input_fieldTY = new JTextField(10);
+		input_fieldTY.setText("TY");
+		input_panel.add(input_fieldFX);
+		input_panel.add(input_fieldFY);
+		input_panel.add(input_fieldTX);
+		input_panel.add(input_fieldTY);
 		GridBagConstraints gbc2 = new GridBagConstraints();
 		gbc2.fill = GridBagConstraints.BOTH;
 		gbc2.gridx = 0;
@@ -177,7 +190,11 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				client.sendRequest(new MoveRequest(new Point(3, 7), new Point(4,9)));
+				int FX = Integer.parseInt(input_fieldFX.getText());
+				int FY = Integer.parseInt(input_fieldFY.getText());
+				int TX = Integer.parseInt(input_fieldTX.getText());
+				int TY = Integer.parseInt(input_fieldTY.getText());
+				client.sendRequest(new MoveRequest(new Point(FX, FY), new Point(TX, TY)));
 				addToLog("Sent moveRequest");
 			}
 		});
@@ -198,7 +215,9 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//client.sendRequest(new PossibleMovesRequest(pawnPos));
+				int FX = Integer.parseInt(input_fieldFX.getText());
+				int FY = Integer.parseInt(input_fieldFY.getText());
+				client.sendRequest(new PossibleMovesRequest(new Point(FX, FY)));
 			}
 		});
 

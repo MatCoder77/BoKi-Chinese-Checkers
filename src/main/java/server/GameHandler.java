@@ -148,7 +148,7 @@ public class GameHandler implements Runnable {
 			currentPlayerID = i;
 			notifyClients(new StartTurnResponse(currentClient.getClientInfo()));
 			try {
-				while (((request = receivedRequests.take()) != null) && !isTurnEnded()) {
+				while (!isTurnEnded() && ((request = receivedRequests.take()) != null) ) {
 					request.accept(handler);
 				}
 			} catch (InterruptedException e) {
