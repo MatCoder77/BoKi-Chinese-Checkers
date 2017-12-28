@@ -42,22 +42,22 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <Button fx:id="move" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #eeeeee;" text="Wykonaj ruch" GridPane.rowIndex="1">
+      <Button fx:id="move" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleMove" style="-fx-background-color: #eeeeee;" text="Wykonaj ruch" GridPane.rowIndex="1">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="getMoves" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #eeeeee;" text="Dostępne ruchy" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Button fx:id="getMoves" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleGetMoves" style="-fx-background-color: #eeeeee;" text="Dostępne ruchy" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="endTurn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #eeeeee;" text="Zakończ turę" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="endTurn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleEndTurn" style="-fx-background-color: #eeeeee;" text="Zakończ turę" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="exit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #eeeeee;" text="Wyjście" GridPane.columnIndex="3" GridPane.rowIndex="1">
+      <Button fx:id="exit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleExit" style="-fx-background-color: #eeeeee;" text="Wyjście" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <font>
             <Font size="15.0" />
          </font>

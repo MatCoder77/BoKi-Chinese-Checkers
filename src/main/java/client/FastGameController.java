@@ -46,6 +46,8 @@ public class FastGameController {
 		int tmpToY = Integer.parseInt(toY.getText());
 		Point from = new Point(tmpFromX, tmpFromY);
 		Point to = new Point(tmpToX, tmpToY);
+		System.out.println(from.x + " " + from.y);
+		System.out.println(to.x + " " + to.y);
 	}
 	
 	@FXML
@@ -62,7 +64,7 @@ public class FastGameController {
 	
 	@FXML
 	private void handleExit(ActionEvent event) {
-		
+		System.exit(0);
 	}
 	
 	public void setClient(Client client) {
