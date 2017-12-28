@@ -82,7 +82,7 @@ public class Server {
 			}
 		}
 		
-		return runGameHandler(new GameType().setBoardSize(BoardSize.STANDARD).setPlayersNumber(3), client); //CHANE IT
+		return runGameHandler(new GameType().setBoardSize(BoardSize.STANDARD).setPlayersNumber(6), client); //CHANE IT
 	}
 	
 	boolean joinToGame(GameHandler game, ClientHandler client) {

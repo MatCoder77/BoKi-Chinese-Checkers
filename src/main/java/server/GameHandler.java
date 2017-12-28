@@ -7,8 +7,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import board.BoardSixSix;
+import communication.EndTurnRequest;
+import communication.EndTurnResponse;
+import communication.GameEndedResponse;
 import communication.GameStartedResponse;
 import communication.MoveRequest;
+import communication.MoveResponse;
+import communication.PossibleMovesRequest;
+import communication.PossibleMovesResponse;
 import communication.Request;
 import communication.Response;
 import communication.SomeoneJoinedResponse;
@@ -16,6 +22,7 @@ import communication.SomeoneLeftResponse;
 import communication.StartFastGameResponse;
 import communication.StartFastGameResponse.GameState;
 import communication.StartTurnResponse;
+import communication.WinResponse;
 
 public class GameHandler implements Runnable {
 
@@ -92,12 +99,12 @@ public class GameHandler implements Runnable {
 
 	void createGame() {
 		int playersNum = getExpectedClientsNumber();
-		
-		if(playersNum == 6) {
+
+		if (playersNum == 6) {
 			game = new Game(new BoardSixSix());
 		}
-		
-		for(ClientHandler cl : clients) {
+
+		for (ClientHandler cl : clients) {
 			game.addPlayer();
 		}
 
@@ -106,19 +113,41 @@ public class GameHandler implements Runnable {
 	@Override
 	public void run() {
 		createGame();
+		Request request;
+		MoveRequest moveRequest;
+		PossibleMovesRequest possibleMovesRequest;
+		ClientHandler client;
 		notifyClients(new GameStartedResponse());
 		for (int i = 0; game.getState() == Game.GameState.PENDING; i = (++i % clients.size())) {
-			clients.get(i).sendResponse(new StartTurnResponse());
-			MoveRequest moveRequest;
+			if(game.getPlayer(i).hasFinished())
+				continue;
+			client = clients.get(i);
+			notifyClients(new StartTurnResponse(client.getClientInfo()));
 			try {
-				while ((moveRequest = (MoveRequest) receivedRequests.take()) != null) {
-					Server.getInstance().getServerGUI().addToLog(
-							"W CH Received MoveRequest: form " + moveRequest.getOldPos() + moveRequest.getNewPos());
+				while((request = receivedRequests.take()) != null) {
+					if(request instanceof EndTurnRequest)
+						break;
+					
+					else if(request instanceof PossibleMovesRequest) {
+						possibleMovesRequest = (PossibleMovesRequest) request;
+						client.sendResponse(new PossibleMovesResponse(game.checkValidMoves(i, possibleMovesRequest.getPawnPos())));
+					}
+					
+					else if(request instanceof MoveRequest) {
+						moveRequest = (MoveRequest) request;
+						game.move(i, moveRequest.getOldPos(), moveRequest.getNewPos());
+						notifyClients(new MoveResponse(client.getClientInfo(), moveRequest.getOldPos(), moveRequest.getNewPos()));
+						if(game.getPlayer(i).hasFinished()) {
+							notifyClients(new WinResponse(client.getClientInfo()));
+						}
+					}
 				}
+				notifyClients(new EndTurnResponse(client.getClientInfo()));
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		notifyClients(new GameEndedResponse());
 	}
 }

@@ -216,5 +216,9 @@ public class Game {
 		}
 		return GameState.ENDDED;
 	}
+	
+	Player getPlayer(int i) {
+		return players.get(i);
+	}
 }
 

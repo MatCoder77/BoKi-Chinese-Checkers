@@ -37,6 +37,9 @@ public class RequestHandler extends CommandHandler {
 	}
 
 	public void handle(DisconnectRequest request) {
+		if(gameHandler != null) {
+			
+		}
 		clientHandler.sendResponse(new DisconnectResponse());
 		Server.getInstance().getServerGUI().addToLog("Rozłączono użytkownika " + request.getClientName());
 	}
