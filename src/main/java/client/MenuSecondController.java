@@ -8,12 +8,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MenuSecondController {
@@ -23,27 +26,44 @@ public class MenuSecondController {
 	private Client client;
 	
 	@FXML
-	private Button gameNow;
+	private VBox vboxPlayers;
 	
 	@FXML
-	private Button startGame;
+	private VBox vboxBots;
 	
 	@FXML
-	private ChoiceBox playersNum;
+	private Button startGameBots;
+	
+	@FXML
+	private Button startGamePlayers;
+	
+	@FXML
+	private ComboBox<String> botsSize;
+	
+	@FXML
+	private ComboBox<String> playersSize;
 	
 	@FXML
 	private void initialize() {
 		
-		playersNum = new ChoiceBox();
-		playersNum.setTooltip(new Tooltip("Iloś graczy"));
-		ObservableList<String> items; 
-		//playersNum.setItems( );
-		playersNum.getItems().addAll("2", "4");
+		playersSize = new ComboBox<>();
+		playersSize.getItems().removeAll(playersSize.getItems());
+		playersSize.getItems().addAll("2", "3", "4", "6", "dowolna ilośc");
+		playersSize.setMaxWidth(Double.MAX_VALUE);
+		vboxPlayers.getChildren().add(playersSize);
+		vboxPlayers.setAlignment(Pos.CENTER);
+		
+		botsSize = new ComboBox<>();
+		botsSize.getItems().removeAll(playersSize.getItems());
+		botsSize.getItems().addAll("2", "3", "4", "6");
+		botsSize.setMaxWidth(Double.MAX_VALUE);
+		vboxBots.getChildren().add(botsSize);
+		vboxBots.setAlignment(Pos.CENTER);
 	}
 	
 	@FXML
-	private void handleGameNow(ActionEvent event) {
-		Stage stage=(Stage) gameNow.getScene().getWindow();
+	private void handleStartGameBots(ActionEvent event) {
+		Stage stage=(Stage) startGameBots.getScene().getWindow();
 		//Parent root = null;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("FastGame.fxml"));
 		try {
@@ -70,8 +90,22 @@ public class MenuSecondController {
 	}
 	
 	@FXML
-	private void handleStartGame(ActionEvent event) {
-		
+	private void handleStartGamePlayers(ActionEvent event) {
+		Stage stage=(Stage) startGamePlayers.getScene().getWindow();
+		//Parent root = null;
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("FastGame.fxml"));
+		try {
+			stage.setScene(new Scene((Pane) loader.load()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		FastGameController controller = loader.<FastGameController>getController();
+		client.setFastGame(controller);
+		controller.setClient(client);
+		System.out.println(client.getName());
+		client.sendRequest(new StartFastGameRequest(client.getName()));
+		stage.show();
 	}
 	
 	public void setClient(Client client) {
