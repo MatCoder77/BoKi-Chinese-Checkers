@@ -80,17 +80,17 @@ public class Server {
 		return gameHandler; //CHANGE IT
 	}
 		
-	GameHandler runFastGame(ClientHandler client) {
+	GameHandler runFastGame(ClientHandler client, GameType gameType) {
 		if(gameHandlers.size() != 0) {
 			for(GameHandler game : gameHandlers) {
-				if(game.waitsForPlayers()) {
+				if(game.waitsForPlayers() && (gameType.getPlayersNumber() == game.getGameInfo().getType().getPlayersNumber())) {
 					game.addClient(client);
 					return game;
 				}
 			}
 		}
 		
-		return runGameHandler(new GameType().setBoardSize(BoardSize.STANDARD).setPlayersNumber(6), client); //CHANE IT
+		return runGameHandler(gameType, client); //CHANE IT
 	}
 	
 	boolean joinToGame(GameHandler game, ClientHandler client) {

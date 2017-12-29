@@ -2,6 +2,7 @@ package client;
 
 import java.io.IOException;
 
+import board.BoardType;
 import communication.StartFastGameRequest;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -18,6 +19,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import server.GameType;
+import server.GameType.BoardSize;
 
 public class MenuSecondController {
 	
@@ -38,24 +41,24 @@ public class MenuSecondController {
 	private Button startGamePlayers;
 	
 	@FXML
-	private ComboBox<String> botsSize;
+	private ComboBox<Integer> botsSize;
 	
 	@FXML
-	private ComboBox<String> playersSize;
+	private ComboBox<Integer> playersSize;
 	
 	@FXML
 	private void initialize() {
 		
 		playersSize = new ComboBox<>();
 		playersSize.getItems().removeAll(playersSize.getItems());
-		playersSize.getItems().addAll("2", "3", "4", "6", "dowolna ilośc");
+		playersSize.getItems().addAll(2, 3, 4, 6);
 		playersSize.setMaxWidth(Double.MAX_VALUE);
 		vboxPlayers.getChildren().add(playersSize);
 		vboxPlayers.setAlignment(Pos.CENTER);
 		
 		botsSize = new ComboBox<>();
-		botsSize.getItems().removeAll(playersSize.getItems());
-		botsSize.getItems().addAll("2", "3", "4", "6");
+		botsSize.getItems().removeAll(botsSize.getItems());
+		botsSize.getItems().addAll(1, 2, 3, 5);
 		botsSize.setMaxWidth(Double.MAX_VALUE);
 		vboxBots.getChildren().add(botsSize);
 		vboxBots.setAlignment(Pos.CENTER);
@@ -76,7 +79,7 @@ public class MenuSecondController {
 		client.setFastGame(controller);
 		controller.setClient(client);
 		System.out.println(client.getName());
-		client.sendRequest(new StartFastGameRequest(client.getName()));
+		//client.sendRequest(new StartFastGameRequest(client.getName()));
 		stage.show();
 		/*try {
 			root = FXMLLoader.load(getClass().getResource("FastGame.fxml"));
@@ -104,7 +107,7 @@ public class MenuSecondController {
 		client.setFastGame(controller);
 		controller.setClient(client);
 		System.out.println(client.getName());
-		client.sendRequest(new StartFastGameRequest(client.getName()));
+		client.sendRequest(new StartFastGameRequest(client.getName(), new GameType(playersSize.getValue(), BoardSize.STANDARD)));
 		stage.show();
 	}
 	

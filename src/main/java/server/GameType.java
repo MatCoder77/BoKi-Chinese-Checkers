@@ -2,24 +2,29 @@ package server;
 
 import java.io.Serializable;
 
+import board.BoardType;
+
 public class GameType implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -697104663877608756L;
 	int playersNumber;
-	BoardSize size;
-	public enum BoardSize {
-		SMALL, STANDARD, BIG;
-	}
+	BoardSize boardType;
 	
-	GameType setPlayersNumber(int n) {
+	public enum BoardSize {SMALL, STANDARD, BIG};
+	
+	public GameType(int playersNumber, BoardSize boardType) {
+		this.playersNumber = playersNumber;
+		this.boardType = boardType;
+	}
+	public GameType setPlayersNumber(int n) {
 		playersNumber = n;
 		return this;
 	}
 	
-	GameType setBoardSize(BoardSize size) {
-		this.size = size;
+	public GameType setBoardSize(BoardSize size) {
+		this.boardType = size;
 		return this;
 	}
 	
@@ -28,6 +33,6 @@ public class GameType implements Serializable{
 	}
 	
 	public BoardSize getBoardSize() {
-		return size;
+		return boardType;
 	}
 }

@@ -52,7 +52,7 @@ public class RequestHandler extends CommandHandler {
 
 	public void handle(StartFastGameRequest request) {
 		Server.getInstance().getServerGUI().addToLog("Otrzymano zapytanie StartFastGame od " + request.getClient());
-		gameHandler = Server.getInstance().runFastGame(clientHandler);
+		gameHandler = Server.getInstance().runFastGame(clientHandler, request.getGameType());
 		clientHandler.setGameHandler(gameHandler);
 		clientHandler.sendResponse(new StartFastGameResponse(gameHandler.getGameInfo().getID(),
 				gameHandler.getGameInfo().getName(), gameHandler.getGameInfo().getType(),

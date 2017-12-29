@@ -22,6 +22,8 @@ import communication.LeaveGameRequest;
 import communication.MoveRequest;
 import communication.PossibleMovesRequest;
 import communication.StartFastGameRequest;
+import server.GameType;
+import server.GameType.BoardSize;
 
 public class ClientGUI extends JFrame {
 	
@@ -170,7 +172,7 @@ public class ClientGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				client.sendRequest(new StartFastGameRequest(user_name_field.getText()));
+				client.sendRequest(new StartFastGameRequest(user_name_field.getText(), new GameType(6, BoardSize.STANDARD)));
 			}
 		});
 
