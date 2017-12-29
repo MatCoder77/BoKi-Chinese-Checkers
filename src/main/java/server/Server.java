@@ -93,6 +93,13 @@ public class Server {
 		return runGameHandler(gameType, client); //CHANE IT
 	}
 	
+	void runComputerGame(ClientHandler client, GameType gameType) {
+		GameHandler gameHandler = runGameHandler(gameType, client);
+		for(int i = 0; i < gameType.getPlayersNumber() - 1; i++) {
+			joinToGame(gameHandler, new Boot());
+		}	
+	}
+	
 	boolean joinToGame(GameHandler game, ClientHandler client) {
 		if(game.waitsForPlayers()) {
 			game.addClient(client);

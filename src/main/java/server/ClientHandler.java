@@ -12,30 +12,31 @@ import communication.Request;
 import communication.Response;
 
 /**
- * Class responsible for holding connection
- * and getting data from client app.
+ * Class responsible for holding connection and getting data from client app.
  *
  */
 public class ClientHandler implements Runnable {
-	
+
 	private static AtomicInteger clientCounter = new AtomicInteger(0);
 	private Socket socket;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
-	private GameHandler game;
-	private BlockingQueue<GameplayRequest> requestQueue;
-	private ClientInfo clientInfo;
-	
+	protected GameHandler game;
+	protected BlockingQueue<GameplayRequest> requestQueue;
+	protected ClientInfo clientInfo;
+
 	public ClientHandler(Socket socket) {
 		this.socket = socket;
 		clientInfo = new ClientInfo(clientCounter.getAndIncrement());
 		game = null;
 		requestQueue = null;
-		try {
-			output = new ObjectOutputStream(socket.getOutputStream());
-			input = new ObjectInputStream(socket.getInputStream());		
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (socket != null) {
+			try {
+				output = new ObjectOutputStream(socket.getOutputStream());
+				input = new ObjectInputStream(socket.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -45,7 +46,7 @@ public class ClientHandler implements Runnable {
 		try {
 			Object receivedObject;
 			Request request;
-			while ((receivedObject = input.readObject()) != null) {			
+			while ((receivedObject = input.readObject()) != null) {
 				request = (Request) receivedObject;
 				request.accept(handler);
 			}
@@ -64,18 +65,27 @@ public class ClientHandler implements Runnable {
 			e.printStackTrace();
 		}
 	}
+
+	public void sendToGame(GameplayRequest request) {
+		try {
+			requestQueue.put(request);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	void setGameHandler(GameHandler game) {
 		this.game = game;
 		this.requestQueue = game.getRequestQueue();
 	}
-	
+
 	ClientInfo getClientInfo() {
 		return clientInfo;
 	}
-	
+
 	boolean isPlayingGame() {
-		if(game != null)
+		if (game != null)
 			return true;
 		return false;
 	}

@@ -16,7 +16,7 @@ import communication.SomeoneJoinedResponse;
 import communication.SomeoneLeftResponse;
 import communication.StartFastGameResponse;
 import communication.StartFastGameResponse.GameState;
-import communication.StartGameResponse;
+import communication.StartComputerGameResponse;
 import communication.StartTurnResponse;
 import communication.WinResponse;
 import server.ClientInfo;
@@ -136,7 +136,7 @@ public class ResponseHandler extends CommandHandler {
 		client.getClientWindow().setInfoFromServer("GAME STARTED");
 	}
 
-	public void handle(StartGameResponse response) {
+	public void handle(StartComputerGameResponse response) {
 
 	}
 

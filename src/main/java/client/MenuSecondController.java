@@ -3,6 +3,7 @@ package client;
 import java.io.IOException;
 
 import board.BoardType;
+import communication.StartComputerGameRequest;
 import communication.StartFastGameRequest;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -58,7 +59,7 @@ public class MenuSecondController {
 		
 		botsSize = new ComboBox<>();
 		botsSize.getItems().removeAll(botsSize.getItems());
-		botsSize.getItems().addAll(1, 2, 3, 5);
+		botsSize.getItems().addAll(2, 3, 4, 6);
 		botsSize.setMaxWidth(Double.MAX_VALUE);
 		vboxBots.getChildren().add(botsSize);
 		vboxBots.setAlignment(Pos.CENTER);
@@ -79,7 +80,7 @@ public class MenuSecondController {
 		client.setFastGame(controller);
 		controller.setClient(client);
 		System.out.println(client.getName());
-		//client.sendRequest(new StartFastGameRequest(client.getName()));
+		client.sendRequest(new StartComputerGameRequest(client.getName(), new GameType(botsSize.getValue(), BoardSize.STANDARD)));
 		stage.show();
 		/*try {
 			root = FXMLLoader.load(getClass().getResource("FastGame.fxml"));

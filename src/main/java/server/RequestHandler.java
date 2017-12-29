@@ -13,7 +13,7 @@ import communication.LeaveGameResponse;
 import communication.MoveRequest;
 import communication.StartFastGameRequest;
 import communication.StartFastGameResponse;
-import communication.StartGameRequest;
+import communication.StartComputerGameRequest;
 import communication.StartTurnRequest;
 
 /**
@@ -59,8 +59,13 @@ public class RequestHandler extends CommandHandler {
 				gameHandler.getGameInfo().getState(), gameHandler.getGameInfo().getConnectedClientsInfo()));
 	}
 
-	public void handle(StartGameRequest request) {
-		// TODO Auto-generated method stub
+	public void handle(StartComputerGameRequest request) {
+		Server.getInstance().getServerGUI().addToLog("Otrzymano zapytanie StartComputerGame od " + request.getClient());
+		gameHandler = Server.getInstance().runFastGame(clientHandler, request.getGameType());
+		clientHandler.setGameHandler(gameHandler);
+		clientHandler.sendResponse(new StartFastGameResponse(gameHandler.getGameInfo().getID(),
+				gameHandler.getGameInfo().getName(), gameHandler.getGameInfo().getType(),
+				gameHandler.getGameInfo().getState(), gameHandler.getGameInfo().getConnectedClientsInfo()));
 
 	}
 
@@ -72,14 +77,9 @@ public class RequestHandler extends CommandHandler {
 		gameHandler.removeClient(clientHandler);
 		clientHandler.sendResponse(new LeaveGameResponse());
 	}
-	
+
 	public void handle(GameplayRequest request) {
-		try {
-			gameHandler.getRequestQueue().put(request);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		clientHandler.sendToGame(request);
 	}
 
 	@Override
