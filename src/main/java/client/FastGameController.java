@@ -2,9 +2,14 @@ package client;
 
 import java.awt.Point;
 
+import communication.EndTurnRequest;
+import communication.LeaveGameRequest;
+import communication.MoveRequest;
+import communication.PossibleMovesRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class FastGameController {
@@ -36,7 +41,7 @@ public class FastGameController {
 	private TextField toY;
 	
 	@FXML
-	private TextField result;
+	private TextArea result;
 	
 	@FXML
 	private void handleMove(ActionEvent event) {
@@ -46,8 +51,9 @@ public class FastGameController {
 		int tmpToY = Integer.parseInt(toY.getText());
 		Point from = new Point(tmpFromX, tmpFromY);
 		Point to = new Point(tmpToX, tmpToY);
-		System.out.println(from.x + " " + from.y);
-		System.out.println(to.x + " " + to.y);
+		//System.out.println(from.x + " " + from.y);
+		//System.out.println(to.x + " " + to.y);
+		client.sendRequest(new MoveRequest(from, to));
 	}
 	
 	@FXML
@@ -55,16 +61,17 @@ public class FastGameController {
 		int tmpX = Integer.parseInt(fromX.getText());
 		int tmpY = Integer.parseInt(fromY.getText());
 		Point point = new Point(tmpX, tmpY);
+		client.sendRequest(new PossibleMovesRequest(point));
 	}
 	
 	@FXML
 	private void handleEndTurn(ActionEvent event) {
-		
+		client.sendRequest(new EndTurnRequest());
 	}
 	
 	@FXML
 	private void handleExit(ActionEvent event) {
-		System.exit(0);
+		client.sendRequest(new LeaveGameRequest());
 	}
 	
 	public void setClient(Client client) {
@@ -73,7 +80,7 @@ public class FastGameController {
 	}
 	
 	public void setInfoFromServer(String text) {
-		result.setText(text);
+		result.appendText("> " + text + "\n");
 	}
 
 }

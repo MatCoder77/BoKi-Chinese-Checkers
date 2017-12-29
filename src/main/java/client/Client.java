@@ -164,4 +164,12 @@ public class Client {
 		this.fastGame = fastGame;
 		this.fastGame.setInfoFromServer("Hello world");
 	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public FastGameController getClientWindow() {
+		return fastGame;
+	}
 }

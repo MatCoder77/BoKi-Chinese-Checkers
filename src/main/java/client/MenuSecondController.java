@@ -2,6 +2,7 @@ package client;
 
 import java.io.IOException;
 
+import communication.StartFastGameRequest;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,6 +55,8 @@ public class MenuSecondController {
 		FastGameController controller = loader.<FastGameController>getController();
 		client.setFastGame(controller);
 		controller.setClient(client);
+		System.out.println(client.getName());
+		client.sendRequest(new StartFastGameRequest(client.getName()));
 		stage.show();
 		/*try {
 			root = FXMLLoader.load(getClass().getResource("FastGame.fxml"));
