@@ -35,6 +35,7 @@ public class ResponseHandler extends CommandHandler {
 		//client.getClientWindow().setInfoFromServer("Connected to server, assigned ClientID: " + response.getClientID());
 		System.out.println("Connected to server, assigned ClientID: " + response.getClientID());
 	}
+	}
 
 	public void handle(DisconnectResponse response) {
 		//client.getClientGUI().addToLog("You were disconnected");

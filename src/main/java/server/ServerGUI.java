@@ -86,7 +86,7 @@ public class ServerGUI extends JFrame {
 				//TODO
 		       ServerGUI.this.addToLog("Zamykanie serwera...");
 		       ServerGUI.this.addToLog("Zamknięto...");
-				
+		       serverThread.interrupt();			
 			}
 		});
 		clearLog.addActionListener(new ActionListener() {
