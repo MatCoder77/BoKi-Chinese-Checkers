@@ -1,16 +1,11 @@
 package board;
 
-/**
- * @author filipbk
- * Six-pointed star, six players
- *
- */
-public class BoardSixSix implements BoardType {
+public class BoardSixFour implements BoardType {
 
 	private static final String[][] board = { {"N", "N", "N", "N", "1", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N"},
 											  {"N", "N", "N", "N", "1", "1", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N"},
 											  {"N", "N", "N", "N", "1", "1", "1", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N"},
-										      {"N", "N", "N", "N", "1", "1", "1", "1", "N", "N", "N", "N", "N", "N", "N", "N", "N"},
+											  {"N", "N", "N", "N", "1", "1", "1", "1", "N", "N", "N", "N", "N", "N", "N", "N", "N"},
 											  {"6", "6", "6", "6", "C", "C", "C", "C", "C", "2", "2", "2", "2", "N", "N", "N", "N"},
 											  {"N", "6", "6", "6", "C", "C", "C", "C", "C", "C", "2", "2", "2", "N", "N", "N", "N"},
 											  {"N", "N", "6", "6", "C", "C", "C", "C", "C", "C", "C", "2", "2", "N", "N", "N", "N"},
@@ -24,11 +19,11 @@ public class BoardSixSix implements BoardType {
 											  {"N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "4", "4", "4", "N", "N", "N", "N"},
 											  {"N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "4", "4", "N", "N", "N", "N"},
 											  {"N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "N", "4", "N", "N", "N", "N"} };
-	
-	private final static boolean[][] empty = { {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
-											   {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
-											   {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
-											   {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
+
+	private final static boolean[][] empty = { {false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false},
+											   {false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false},
+											   {false, false, false, false, true, true, true, false, false, false, false, false, false, false, false, false, false},
+											   {false, false, false, false, true, true, true, true, false, false, false, false, false, false, false, false, false},
 											   {false, false, false, false, true, true, true, true, true, false, false, false, false, false, false, false, false},
 											   {false, false, false, false, true, true, true, true, true, true, false, false, false, false, false, false, false},
 											   {false, false, false, false, true, true, true, true, true, true, true, false, false, false, false, false, false},
@@ -38,12 +33,12 @@ public class BoardSixSix implements BoardType {
 											   {false, false, false, false, false, false, true, true, true, true, true, true, true, false, false, false, false},
 											   {false, false, false, false, false, false, false, true, true, true, true, true, true, false, false, false, false},
 											   {false, false, false, false, false, false, false, false, true, true, true, true, true, false, false, false, false},
-											   {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
-											   {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
-											   {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false},
-											   {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false} };
-	
-	private final int[] corners = {1, 2, 3, 4, 5, 6};
+											   {false, false, false, false, false, false, false, false, false, true, true, true, true, false, false, false, false},
+											   {false, false, false, false, false, false, false, false, false, false, true, true, true, false, false, false, false},
+											   {false, false, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false},
+											   {false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false} };
+
+	private final int[] corners = {2, 3, 5, 6};
 	
 	@Override
 	public String[][] getBoard() {
@@ -59,5 +54,5 @@ public class BoardSixSix implements BoardType {
 	public int[] getCorners() {
 		return corners;
 	}
-	
+
 }

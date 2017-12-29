@@ -7,7 +7,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import board.BoardSixFour;
 import board.BoardSixSix;
+import board.BoardSixThree;
+import board.BoardSixTwo;
 import communication.Command;
 import communication.CommandHandler;
 import communication.EndTurnRequest;
@@ -113,7 +116,16 @@ public class GameHandler implements Runnable {
 
 	void createGame() {
 		int playersNum = getExpectedClientsNumber();
-
+		
+		if (playersNum == 2) {
+			game = new Game(new BoardSixTwo());
+		}
+		if (playersNum == 3) {
+			game = new Game(new BoardSixThree());
+		}
+		if (playersNum == 4) {
+			game = new Game(new BoardSixFour());
+		}
 		if (playersNum == 6) {
 			game = new Game(new BoardSixSix());
 		}
