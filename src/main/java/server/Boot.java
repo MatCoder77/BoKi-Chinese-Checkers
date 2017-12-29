@@ -1,7 +1,9 @@
 package server;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import communication.Command;
 import communication.CommandHandler;
@@ -10,11 +12,13 @@ import communication.GameEndedResponse;
 import communication.GameStartedResponse;
 import communication.LeaveGameResponse;
 import communication.MoveResponse;
+import communication.PossibleMovesRequest;
 import communication.PossibleMovesResponse;
 import communication.Request;
 import communication.Response;
 import communication.SomeoneJoinedResponse;
 import communication.SomeoneLeftResponse;
+import communication.StartComputerGameResponse;
 import communication.StartFastGameResponse;
 import communication.StartTurnResponse;
 import communication.WinResponse;
@@ -22,9 +26,15 @@ import communication.WinResponse;
 public class Boot extends ClientHandler{
 	
 	BlockingQueue<Response> receivedResponses;
+	BootStrategy bootStategy;
+	int myCorner;
+	int targetCorner;
 	
-	Boot() {
+	Boot(int targetCorner) {
 		super(null);
+		clientInfo.setName("Boot " + clientInfo.getID());
+		this.targetCorner = targetCorner;
+		receivedResponses = new LinkedBlockingQueue<>();
 	}
 	
 	@Override
@@ -41,11 +51,17 @@ public class Boot extends ClientHandler{
 		}
 	}
 	
+	
 	@Override
 	synchronized void sendResponse(Response response) {
-		// TODO Auto-generated method stub
-		super.sendResponse(response);
+		try {
+			receivedResponses.put(response);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
 
 	public class BootResponseHandler extends CommandHandler {
 
@@ -78,6 +94,10 @@ public class Boot extends ClientHandler{
 			else {
 				
 			}
+		}
+		
+		public void handle(StartComputerGameResponse response) {
+			//myCorner = response.getConnectedPlayers().size(); //can occur problems with synchronization, boots are added very fast
 		}
 		
 		public void handle(GameEndedResponse response) {
