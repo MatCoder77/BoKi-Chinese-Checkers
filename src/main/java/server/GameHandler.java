@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import board.BoardSixSix;
@@ -134,6 +135,11 @@ public class GameHandler implements Runnable {
 		}
 		return false;
 	}
+	
+	int chooseFirstPlayerIndex() {
+		int randomNum = ThreadLocalRandom.current().nextInt(0, clients.size());
+		return randomNum;
+	}
 
 	@Override
 	public void run() {
@@ -141,7 +147,7 @@ public class GameHandler implements Runnable {
 		GameplayRequest request;
 		GameplayRequestHandler handler = new GameplayRequestHandler();
 		notifyClients(new GameStartedResponse());
-		for (int i = 0; game.getState() == Game.GameState.PENDING; i = (++i % clients.size())) {
+		for (int i = chooseFirstPlayerIndex(); game.getState() == Game.GameState.PENDING; i = (++i % clients.size())) {
 			if (game.getPlayer(i).hasFinished())
 				continue;
 			currentClient = clients.get(i);
