@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import board.BoardType;
 import board.Field;
 import board.Pawn;
+import server.Player.MoveType;
 
 /**
  * @author filipbk
@@ -53,16 +54,21 @@ public class Game {
 	
 	public ArrayList<Point> checkValidMoves(int clientIndex, Point point) {
 		Pawn tmpPawn = null;
+		Player tmpPlayer = null;
 		ArrayList<Pawn> tmpPawns = null;
 		for(Player pl : players) {
 			if(pl.getClientID() == clientIndex) {
-				tmpPawns = pl.getPawns();
+				//tmpPawns = pl.getPawns();
+				tmpPlayer = pl;
+				break;
 			}
 		}
+		tmpPawns = tmpPlayer.getPawns();
 		
 		for(Pawn pa : tmpPawns) {
 			if(pa.getLocation().equals(point)) {
 				tmpPawn = pa;
+				break;
 			}
 		}
 		
@@ -70,8 +76,11 @@ public class Game {
 		if(tmpPawn == null) {
 			validMoves = new ArrayList<>();
 		}
-		else {
+		else if(tmpPlayer.getMoveType().equals(MoveType.FIRST)) {
 			validMoves = checkValidMoves(tmpPawn);
+		}
+		else {
+			validMoves = checkValidJumps(tmpPawn);
 		}
 		
 		return validMoves;
@@ -144,6 +153,50 @@ public class Game {
 		return validMoves;
 	}
 	
+	public ArrayList<Point> checkValidJumps(Pawn pawn) {
+		ArrayList<Point> validJumps = new ArrayList<>();
+		int x = pawn.getLocation().x;
+		int y = pawn.getLocation().y;
+		 
+		if(!isValid(x - 1, y - 1, pawn)) {
+			if(isValid(x - 2, y - 2, pawn)) {
+				validJumps.add(new Point(x - 2, y - 2));
+			}
+		}
+		 
+		if(!isValid(x - 1, y, pawn)) {
+			if(isValid(x - 2, y, pawn)) {
+				validJumps.add(new Point(x - 2, y));
+			}
+		}
+		 
+		if(!isValid(x, y - 1, pawn)) {
+			if(isValid(x, y - 2, pawn)) {
+				validJumps.add(new Point(x, y - 2));
+			}
+		}
+		 
+		if(!isValid(x, y + 1, pawn)) {
+			if(isValid(x, y + 2, pawn)) {
+				validJumps.add(new Point(x, y + 2));
+			}
+		}
+		 
+		if(!isValid(x + 1, y, pawn)) {
+			if(isValid(x + 2, y, pawn)) {
+				validJumps.add(new Point(x + 2, y));
+			}
+		}
+		 
+		if(!isValid(x + 1, y + 1, pawn)) {
+			if(isValid(x + 2, y + 2, pawn)) {
+				validJumps.add(new Point(x + 2, y + 2));
+			}
+		}
+		
+		return validJumps;
+	}
+	
 	/**
 	 * @param x x coord
 	 * @param y y coord
@@ -186,19 +239,26 @@ public class Game {
 	
 	public void move(int clientIndex, Point from, Point to) {
 		Pawn tmpPawn = null;
+		Player tmpPlayer = null;
 		ArrayList<Pawn> tmpPawns = null;
 		for(Player pl : players) {
 			if(pl.getClientID() == clientIndex) {
 				tmpPawns = pl.getPawns();
+				tmpPlayer = pl;
+				break;
 			}
 		}
 		
 		for(Pawn pa : tmpPawns) {
 			if(pa.getLocation().equals(from)) {
 				tmpPawn = pa;
+				break;
 			}
 		}
 		move(tmpPawn, to);
+		if(tmpPlayer.getMoveType().equals(MoveType.FIRST)) {
+			tmpPlayer.setMoveType(MoveType.NEXT);
+		}
 	}
 	
 	public void move(Pawn pawn, Point destination) {
@@ -227,6 +287,10 @@ public class Game {
 	
 	Player getPlayer(int i) {
 		return players.get(i);
+	}
+	
+	public void endTurn(int PlayerID) {
+		players.get(PlayerID).setMoveType(MoveType.FIRST);
 	}
 }
 
