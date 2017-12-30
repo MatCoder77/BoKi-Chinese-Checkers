@@ -66,7 +66,15 @@ public class Game {
 			}
 		}
 		
-		return checkValidMoves(tmpPawn);
+		ArrayList<Point> validMoves;
+		if(tmpPawn == null) {
+			validMoves = new ArrayList<>();
+		}
+		else {
+			validMoves = checkValidMoves(tmpPawn);
+		}
+		
+		return validMoves;
 	}
 	
 	/**

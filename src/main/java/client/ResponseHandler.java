@@ -103,6 +103,7 @@ public class ResponseHandler extends CommandHandler {
 			players += c.getName() + ", ";
 		}
 		client.getClientGUI().addToLog("Connected players: " + players);*/
+		
 		client.getClientWindow().setInfoFromServer("Joined Fast Game");
 		client.getClientWindow().setInfoFromServer("ID: " + response.getGameID());
 		client.getClientWindow().setInfoFromServer("Name: " + response.getGameName());
@@ -114,6 +115,7 @@ public class ResponseHandler extends CommandHandler {
 			players += c.getName() + ", ";
 		}
 		client.getClientWindow().setInfoFromServer("Connected players: " + players);
+		//client.getMenuSecond().setMessage("State: " + response.getGameState().toString());
 	}
 	
 	public void handle(StartComputerGameResponse response) {
@@ -147,6 +149,7 @@ public class ResponseHandler extends CommandHandler {
 
 	public void handle(GameStartedResponse repsonse) {
 		//client.getClientGUI().addToLog("GAME STARTED");
+		//client.getMenuSecond().openFastGameWindow();
 		client.getClientWindow().setInfoFromServer("GAME STARTED");
 	}
 

@@ -51,6 +51,7 @@ public class MenuFirstController {
 		}
 
 		MenuSecondController controller = loader.<MenuSecondController>getController();
+		client.setMenuSecond(controller);
 		controller.setClient(client);
 		stage.show();
 		

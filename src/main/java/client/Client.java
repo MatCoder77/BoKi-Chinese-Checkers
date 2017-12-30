@@ -22,6 +22,7 @@ public class Client {
 	private String name;
 	private int ID;
 	private ClientGUI clientGUI;
+	private MenuSecondController menuSecond;
 	private FastGameController fastGame;
 
 	public Client(String address, int port, String name) {
@@ -171,5 +172,13 @@ public class Client {
 	
 	public FastGameController getClientWindow() {
 		return fastGame;
+	}
+	
+	public void setMenuSecond(MenuSecondController menuSecond) {
+		this.menuSecond = menuSecond;
+	}
+	
+	public MenuSecondController getMenuSecond() {
+		return menuSecond;
 	}
 }
