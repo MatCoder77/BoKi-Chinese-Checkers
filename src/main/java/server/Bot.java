@@ -23,16 +23,16 @@ import communication.StartFastGameResponse;
 import communication.StartTurnResponse;
 import communication.WinResponse;
 
-public class Boot extends ClientHandler{
+public class Bot extends ClientHandler{
 	
 	BlockingQueue<Response> receivedResponses;
-	BootStrategy bootStategy;
+	BotStrategy bootStategy;
 	int myCorner;
 	int targetCorner;
 	
-	Boot(int targetCorner) {
+	Bot(int targetCorner) {
 		super(null);
-		clientInfo.setName("Boot " + clientInfo.getID());
+		clientInfo.setName("Bot " + clientInfo.getID());
 		this.targetCorner = targetCorner;
 		receivedResponses = new LinkedBlockingQueue<>();
 	}

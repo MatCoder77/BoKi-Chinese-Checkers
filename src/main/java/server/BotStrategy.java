@@ -2,7 +2,7 @@ package server;
 
 import java.awt.Point;
 
-public interface BootStrategy {
+public interface BotStrategy {
 	Point getStartPos();
 	Point makeMove();
 }

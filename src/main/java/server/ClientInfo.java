@@ -9,6 +9,7 @@ public class ClientInfo implements Serializable{
 	private static final long serialVersionUID = -3571281344888585327L;
 	int ID;
 	String name;
+	int playerID;
 	
 	ClientInfo(int ID) {
 		this.ID = ID;
@@ -24,5 +25,13 @@ public class ClientInfo implements Serializable{
 	
 	public int getID() {
 		return ID;
+	}
+	
+	void setPlayerID(int playerID) {
+		this.playerID = playerID;
+	}
+	
+	int getPlayerID() {
+		return playerID;
 	}
 }

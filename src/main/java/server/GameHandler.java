@@ -192,6 +192,9 @@ public class GameHandler implements Runnable {
 			if (game.getPlayer(currentPlayerID).hasFinished()) {
 				notifyClients(new WinResponse(currentClient.getClientInfo()));
 			}
+			else {
+				currentClient.sendResponse(new PossibleMovesResponse(game.checkValidMoves(currentPlayerID, request.getNewPos())));
+			}
 		}
 
 		public void handle(EndTurnRequest request) {

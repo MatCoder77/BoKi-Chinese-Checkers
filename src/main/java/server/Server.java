@@ -95,12 +95,12 @@ public class Server {
 	
 	GameHandler runComputerGame(ClientHandler client, GameType gameType) {
 		GameHandler gameHandler = runGameHandler(gameType, client);
-		Boot boot;
+		Bot bot;
 		for(int i = 1; i < gameType.getPlayersNumber(); i++) {
-			boot = new Boot(1 + (i + 3) % gameType.getPlayersNumber());
-			clientHandlerThread = new Thread(boot);
+			bot = new Bot(1 + (i + 3) % gameType.getPlayersNumber());
+			clientHandlerThread = new Thread(bot);
 			clientHandlerThread.start();
-			joinToGame(gameHandler, boot);
+			joinToGame(gameHandler, bot);
 		}	
 		return gameHandler;
 	}
