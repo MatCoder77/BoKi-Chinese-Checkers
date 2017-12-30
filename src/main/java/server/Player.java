@@ -16,10 +16,14 @@ public class Player {
 	private ArrayList<Pawn> pawns;
 	private int clientID;
 	private int corner;
+	private MoveType moveType;
+	
+	public enum MoveType {FIRST, NEXT};
 	
 	public Player(int clientID, int corner) {
 		this.clientID = clientID;
-		this.corner = corner; 
+		this.corner = corner;
+		this.moveType = MoveType.FIRST;
 	}
 	
 	public void setPawns(ArrayList<Pawn> pawns) {
@@ -58,6 +62,14 @@ public class Player {
 			}
 		}
 		return true;
+	}
+	
+	public void setMoveType(MoveType moveType) {
+		this.moveType = moveType;
+	}
+	
+	public MoveType getMoveType() {
+		return moveType;
 	}
 
 }
