@@ -74,6 +74,7 @@ public class GameHandler implements Runnable {
 	public void addClient(ClientHandler client) {
 		notifyClients(new SomeoneJoinedResponse(client.getClientInfo()));
 		clients.add(client);
+		client.setGameHandler(this);
 		gameInfo.addClientInfo(client.getClientInfo());
 		
 		if (!waitsForPlayers()) {
@@ -129,15 +130,17 @@ public class GameHandler implements Runnable {
 		if (playersNum == 6) {
 			game = new Game(new BoardSixSix());
 		}
-
-		for (ClientHandler cl : clients) {
+		
+		for(int i = 0; i < clients.size(); i++) {
 			game.addPlayer();
+			clients.get(i).getClientInfo().setPlayerID(i);
 		}
 
 	}
 
 	void endTurn() {
 		turnEnded = true;
+		game.endTurn(currentPlayerID);
 	}
 
 	boolean isTurnEnded() {
@@ -158,7 +161,7 @@ public class GameHandler implements Runnable {
 		createGame();
 		GameplayRequest request;
 		GameplayRequestHandler handler = new GameplayRequestHandler();
-		notifyClients(new GameStartedResponse());
+		notifyClients(new GameStartedResponse(gameInfo.getConnectedClientsInfo()));
 		for (int i = chooseFirstPlayerIndex(); game.getState() == Game.GameState.PENDING; i = (++i % clients.size())) {
 			if (game.getPlayer(i).hasFinished())
 				continue;

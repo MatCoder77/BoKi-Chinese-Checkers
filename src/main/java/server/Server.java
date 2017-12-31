@@ -97,7 +97,7 @@ public class Server {
 		GameHandler gameHandler = runGameHandler(gameType, client);
 		Bot bot;
 		for(int i = 1; i < gameType.getPlayersNumber(); i++) {
-			bot = new Bot(1 + (i + 3) % gameType.getPlayersNumber());
+			bot = new Bot(new EasyBot());
 			clientHandlerThread = new Thread(bot);
 			clientHandlerThread.start();
 			joinToGame(gameHandler, bot);

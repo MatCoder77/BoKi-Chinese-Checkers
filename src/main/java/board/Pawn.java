@@ -22,6 +22,13 @@ public class Pawn {
 		this.isInTarget = false;
 	}
 	
+	public Pawn(Pawn p) {
+		this.location = new Point(p.location);
+		this.lastLocation = new Point(p.lastLocation);
+		this.target = new String(p.target);
+		this.isInTarget = p.isInTarget;
+	}
+	
 	public boolean isInTarget() {
 		return isInTarget;
 	}
