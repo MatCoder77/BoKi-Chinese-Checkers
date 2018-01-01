@@ -24,6 +24,8 @@ public class Client {
 	private ClientGUI clientGUI;
 	private MenuSecondController menuSecond;
 	private FastGameController fastGame;
+	private GameWindowController gameWindow;
+	private Board board;
 
 	public Client(String address, int port, String name) {
 		this.address = address;
@@ -180,5 +182,21 @@ public class Client {
 	
 	public MenuSecondController getMenuSecond() {
 		return menuSecond;
+	}
+	
+	public void setGameWindow(GameWindowController gameWindow) {
+		this.gameWindow = gameWindow;
+	}
+	
+	public GameWindowController getGameWindow() {
+		return gameWindow;
+	}
+	
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+	
+	public Board getBoard() {
+		return board;
 	}
 }

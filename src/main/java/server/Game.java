@@ -76,6 +76,9 @@ public class Game {
 		if(tmpPawn == null) {
 			validMoves = new ArrayList<>();
 		}
+		else if(tmpPawn.isAfterStep()) {
+			validMoves = new ArrayList<>();
+		}
 		else if(tmpPlayer.getMoveType().equals(MoveType.FIRST)) {
 			validMoves = checkValidMoves(tmpPawn);
 		}
@@ -158,40 +161,28 @@ public class Game {
 		int x = pawn.getLocation().x;
 		int y = pawn.getLocation().y;
 		 
-		if(!isValid(x - 1, y - 1, pawn)) {
-			if(isValid(x - 2, y - 2, pawn)) {
+		if(isEmpty(x - 1, y - 1) == false && isValid(x - 2, y - 2, pawn) == true) {
 				validJumps.add(new Point(x - 2, y - 2));
-			}
 		}
 		 
-		if(!isValid(x - 1, y, pawn)) {
-			if(isValid(x - 2, y, pawn)) {
+		if(isEmpty(x - 1, y) == false && isValid(x - 2, y, pawn) == true) {
 				validJumps.add(new Point(x - 2, y));
-			}
 		}
 		 
-		if(!isValid(x, y - 1, pawn)) {
-			if(isValid(x, y - 2, pawn)) {
+		if(isEmpty(x, y - 1) == false && isValid(x, y - 2, pawn) == true) {
 				validJumps.add(new Point(x, y - 2));
-			}
 		}
 		 
-		if(!isValid(x, y + 1, pawn)) {
-			if(isValid(x, y + 2, pawn)) {
+		if(isEmpty(x, y + 1) == false && isValid(x, y + 2, pawn) == true) {
 				validJumps.add(new Point(x, y + 2));
-			}
 		}
 		 
-		if(!isValid(x + 1, y, pawn)) {
-			if(isValid(x + 2, y, pawn)) {
+		if(isEmpty(x + 1, y) == false && isValid(x + 2, y, pawn) == true) {
 				validJumps.add(new Point(x + 2, y));
-			}
 		}
 		 
-		if(!isValid(x + 1, y + 1, pawn)) {
-			if(isValid(x + 2, y + 2, pawn)) {
+		if(isEmpty(x + 1, y + 1) == false && isValid(x + 2, y + 2, pawn) == true) {
 				validJumps.add(new Point(x + 2, y + 2));
-			}
 		}
 		
 		return validJumps;
@@ -213,7 +204,13 @@ public class Game {
 		if(board[x][y].isEmpty() == true && pawn.isInTarget() == false && (new Point(x, y)).equals(pawn.getLastLocation()) == false) {
 			return true;
 		}
+		else if(board[x][y].isEmpty() == true && pawn.isInTarget() == false && (new Point(x, y)).equals(pawn.getLastLocation()) == true && pawn.isInMove() == false) {
+			return true;
+		}
 		else if(board[x][y].isEmpty() == true && board[x][y].getFieldType().equals(pawn.getTarget()) == true && (new Point(x, y)).equals(pawn.getLastLocation()) == false) {
+			return true;
+		}
+		else if(board[x][y].isEmpty() == true && board[x][y].getFieldType().equals(pawn.getTarget()) == true && (new Point(x, y)).equals(pawn.getLastLocation()) == true && pawn.isInMove() == false) {
 			return true;
 		}
 		else {
@@ -256,6 +253,7 @@ public class Game {
 			}
 		}
 		move(tmpPawn, to);
+		tmpPawn.setInMove();
 		if(tmpPlayer.getMoveType().equals(MoveType.FIRST)) {
 			tmpPlayer.setMoveType(MoveType.NEXT);
 		}
@@ -264,10 +262,14 @@ public class Game {
 	public void move(Pawn pawn, Point destination) {
 		// TODO Will be changed to private
 		Point lastLocation = pawn.getLocation();
-		board[pawn.getLocation().x][pawn.getLocation().y].setEmpty();
+		board[lastLocation.x][lastLocation.y].setEmpty();
 		board[destination.x][destination.y].setTaken();
 		pawn.setLocation(destination);
 		pawn.setLastLocation(lastLocation);
+		
+		if(isNeighbor(lastLocation, destination)) {
+			pawn.setAfterStep();
+		}
 		
 		if(board[destination.x][destination.y].getFieldType().equals(pawn.getTarget())) {
 			pawn.setInTarget();
@@ -291,6 +293,41 @@ public class Game {
 	
 	public void endTurn(int PlayerID) {
 		players.get(PlayerID).setMoveType(MoveType.FIRST);
+		players.get(PlayerID).endTurn();
+	}
+	
+	private boolean isEmpty(int x, int y) {
+		if(x < 0 || x >= boardHeight || y < 0 || y >= boardWidth) {
+			return false;
+		}
+		else if(board[x][y].isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isNeighbor(Point from, Point to) {
+		int fromX = from.x;
+		int fromY = from.y;
+		if(new Point(fromX - 1, fromY - 1).equals(to)) {
+			return true;
+		}
+		if(new Point(fromX - 1, fromY).equals(to)) {
+			return true;
+		}
+		if(new Point(fromX, fromY - 1).equals(to)) {
+			return true;
+		}
+		if(new Point(fromX, fromY + 1).equals(to)) {
+			return true;
+		}
+		if(new Point(fromX + 1, fromY).equals(to)) {
+			return true;
+		}
+		if(new Point(fromX + 1, fromY + 1).equals(to)) {
+			return true;
+		}
+		return false;
 	}
 }
 

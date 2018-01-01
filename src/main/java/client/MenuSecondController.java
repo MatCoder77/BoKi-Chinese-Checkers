@@ -31,6 +31,9 @@ public class MenuSecondController {
 	
 	private Client client;
 	private Stage stage;
+	private int numOfPlayers;
+	private int numOfBots;
+	private String gameType;
 	
 	@FXML
 	private VBox vboxPlayers;
@@ -75,7 +78,7 @@ public class MenuSecondController {
 	
 	@FXML
 	private void handleStartGameBots(ActionEvent event) {
-		Stage stage=(Stage) startGameBots.getScene().getWindow();
+		/*Stage stage=(Stage) startGameBots.getScene().getWindow();
 		//Parent root = null;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("FastGame.fxml"));
 		try {
@@ -89,21 +92,15 @@ public class MenuSecondController {
 		controller.setClient(client);
 		System.out.println(client.getName());
 		client.sendRequest(new StartComputerGameRequest(client.getName(), new GameType(botsSize.getValue(), BoardSize.STANDARD)));
-		stage.show();
-		/*try {
-			root = FXMLLoader.load(getClass().getResource("FastGame.fxml"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
 		stage.show();*/
+		gameType = "BOTS";
+		numOfBots = botsSize.getValue();
+		client.sendRequest(new StartComputerGameRequest(client.getName(), new GameType(numOfBots, BoardSize.STANDARD)));
 	}
 	
 	@FXML
 	private void handleStartGamePlayers(ActionEvent event) {
-		stage = (Stage)startGamePlayers.getScene().getWindow();
+		/*stage = (Stage)startGamePlayers.getScene().getWindow();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("FastGame.fxml"));
 		try {
 			stage.setScene(new Scene((Pane) loader.load()));
@@ -118,22 +115,66 @@ public class MenuSecondController {
 		
 		client.sendRequest(new StartFastGameRequest(client.getName(), new GameType(playersSize.getValue(), BoardSize.STANDARD)));
 		
-		stage.show();
+		stage.show();*/
+		//openGameWindow();
+		gameType = "PLAYERS";
+		numOfPlayers = playersSize.getValue();
+		client.sendRequest(new StartFastGameRequest(client.getName(), new GameType(numOfPlayers, BoardSize.STANDARD)));
+		
 	}
 	
-	public void openFastGameWindow() {
-		//Stage stage=(Stage) startGamePlayers.getScene().getWindow();
-		//Parent root = null;
-		/*FXMLLoader loader = new FXMLLoader(getClass().getResource("FastGame.fxml"));
+	public void openGameWindow(int playerID) {
+		if (gameType.equals("BOTS")) {
+			stage = (Stage)startGameBots.getScene().getWindow();
+		}
+		else {
+			stage = (Stage)startGamePlayers.getScene().getWindow();
+		}
+		//Stage stage = (Stage)startGamePlayers.getScene().getWindow();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
 		try {
 			stage.setScene(new Scene((Pane) loader.load()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		FastGameController controller = loader.<FastGameController>getController();
-		client.setFastGame(controller);
+		
+		GameWindowController controller = loader.<GameWindowController>getController();
+		MouseEventHandler mouseHandler = new MouseEventHandler(client);
+		Board board = null;
+		if (gameType.equals("BOTS")) {
+			board = new Board(numOfBots, playerID, mouseHandler);
+		}
+		else {
+			board = new Board(numOfPlayers, playerID, mouseHandler);
+		}
+		//Board board = new Board(numOfPlayers, playerID, mouseHandler);
+		controller.setBoard(board);
+		controller.showBoard();
+		client.setBoard(board);
+		client.setGameWindow(controller);
 		controller.setClient(client);
-		System.out.println(client.getName());*/
+		System.out.println(client.getName());
+		stage.show();
+	}
+	
+	public void openComputerGameWindow(int playerID) {
+		Stage stage = (Stage)startGameBots.getScene().getWindow();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
+		try {
+			stage.setScene(new Scene((Pane) loader.load()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		GameWindowController controller = loader.<GameWindowController>getController();
+		MouseEventHandler mouseHandler = new MouseEventHandler(client);
+		Board board = new Board(numOfBots, playerID, mouseHandler);
+		controller.setBoard(board);
+		controller.showBoard();
+		client.setBoard(board);
+		client.setGameWindow(controller);
+		controller.setClient(client);
+		System.out.println(client.getName());
 		stage.show();
 	}
 	
