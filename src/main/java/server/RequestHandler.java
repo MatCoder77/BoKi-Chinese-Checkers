@@ -38,7 +38,7 @@ public class RequestHandler extends CommandHandler {
 	public void handle(ConnectRequest request) {
 		clientHandler.getClientInfo().setName(request.getClientName());
 		clientHandler.sendResponse(new ConnectResponse(clientHandler.getClientInfo().getID()));
-		Server.getInstance().getServerGUI().addToLog("Connected user: " + request.getClientName());
+		//Server.getInstance().getServerGUI().addToLog("Connected user: " + request.getClientName());
 	}
 
 	public void handle(DisconnectRequest request) {

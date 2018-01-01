@@ -50,12 +50,13 @@ public class GameHandler implements Runnable {
 				new ArrayList<>());
 		clients.add(creator);
 		gameInfo.addClientInfo(creator.getClientInfo());
-		Server.getInstance().getServerGUI().addToLog("Utowrzono GameHandler'a");
+		//Server.getInstance().getServerGUI().addToLog("Utowrzono GameHandler'a");
 	}
 
 	void setGameThread(Thread thread) {
 		gameThread = thread;
 	}
+	
 
 	int getConnectedClientsNumber() {
 		return clients.size();

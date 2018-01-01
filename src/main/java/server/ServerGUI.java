@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import jdk.nashorn.internal.ir.CatchNode;
+
 
 public class ServerGUI extends JFrame {
 

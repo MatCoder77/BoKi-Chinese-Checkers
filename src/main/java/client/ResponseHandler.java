@@ -39,6 +39,7 @@ public class ResponseHandler extends CommandHandler {
 	public void handle(DisconnectResponse response) {
 		//client.getClientGUI().addToLog("You were disconnected");
 		client.getClientWindow().setInfoFromServer("You were disconnected");
+		client.disconnect();
 	}
 
 	public void handle(StartTurnResponse response) {

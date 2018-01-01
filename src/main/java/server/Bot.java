@@ -79,26 +79,32 @@ public class Bot extends ClientHandler {
 
 		public void handle(StartTurnResponse response) {
 			if (response.getClientInfo().getID() == clientInfo.getID()) {
-				play();
+				MoveRequest moveRequest = botStrategy.getBestMove();
+				if (moveRequest == null) {
+					sendToGame(new EndTurnRequest());
+				} else {
+					sendToGame(moveRequest);
+				}
 			} else {
 
 			}
 		}
 
 		public void handle(EndTurnResponse response) {
-			if (response.getClientInfo().getID() == clientInfo.getID()) {
-
-			} else {
-				// here
-			}
+			botStrategy.endTurn(response.getClientInfo().getPlayerID());
 		}
 
 		public void handle(PossibleMovesResponse response) {
-			play();
+			MoveRequest moveRequest = botStrategy.getBestMove(response.getPossibleMoves());
+			if (moveRequest == null) {
+				sendToGame(new EndTurnRequest());
+			} else {
+				sendToGame(moveRequest);
+			}
 		}
 
 		public void handle(MoveResponse response) {
-			botStrategy.playerMoved(clientInfo.getPlayerID(), response.getOldPos(), response.getNewPos());
+			botStrategy.playerMoved(response.getClientInfo().getPlayerID(), response.getOldPos(), response.getNewPos());
 		}
 
 		public void handle(StartComputerGameResponse response) {

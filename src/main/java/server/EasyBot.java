@@ -10,6 +10,7 @@ import communication.MoveRequest;
 
 public class EasyBot extends BotStrategy{
 
+	MoveRequest lastMove;
 	@Override
 	public MoveRequest getBestMove() {
 		MoveRequest moveRequest = null;
@@ -24,13 +25,30 @@ public class EasyBot extends BotStrategy{
 			for(Point to : possibleMoves) {
 				newDistance = evaluate(to);
 				if(minDistace > newDistance) {
+					minDistace = newDistance;
 					moveRequest = new MoveRequest(from, to);
 				}
 			}
 		}
+		lastMove = moveRequest;
 		return moveRequest;
 	}
 	
+	public MoveRequest getBestMove(ArrayList<Point> possibleMoves) {
+		MoveRequest bestMove = null;
+		int newDistance;
+		int minDistance = Integer.MAX_VALUE;
+		//ArrayList<Point> possibleMoves = game.checkValidMoves(playerID, from);
+		for(Point to : possibleMoves) {
+			newDistance = evaluate(to);
+			if(minDistance > newDistance) {
+				minDistance = newDistance;
+				bestMove = new MoveRequest(lastMove.getNewPos(), to);
+			}
+		}
+		lastMove = bestMove;
+		return bestMove;
+	}
 	int evaluate(Point pos) {
 		int target = game.getPlayer(playerID).getCorner();
 		Point goal = null;
@@ -54,6 +72,13 @@ public class EasyBot extends BotStrategy{
 		}
 		
 		return Math.max(Math.abs(goal.x - pos.x), Math.abs(goal.y - pos.y));
+	}
+
+
+	@Override
+	public MoveRequest getBestMoveFromPoint(Point from) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 //	int getMaxScored(Point from, ArrayList<Point> possibleMoves, Pawn pawn) {

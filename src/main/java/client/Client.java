@@ -44,7 +44,7 @@ public class Client {
 	 * 
 	 * @return true if client is connected, false otherwise
 	 */
-	boolean isConnected() {
+	public boolean isConnected() {
 		return connected;
 	}
 
@@ -127,7 +127,7 @@ public class Client {
 	 * 
 	 * @return true if no problems occurred, false otherwise
 	 */
-	boolean disconnect() {
+	public boolean disconnect() {
 		if (isConnected()) {
 			sendRequest(new DisconnectRequest(name));
 			try {

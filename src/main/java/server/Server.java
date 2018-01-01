@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import server.GameType.BoardSize;
 
@@ -14,13 +15,13 @@ public class Server {
 	private ServerSocket serverSocket;
 	private Thread clientHandlerThread;
 	private ServerGUI serverGUI; //will be removed
-	private ArrayList<ClientHandler> clientHandlers;
-	private ArrayList<GameHandler> gameHandlers;
+	private CopyOnWriteArrayList<ClientHandler> clientHandlers;
+	private CopyOnWriteArrayList<GameHandler> gameHandlers;
 
 	private Server (int port) throws IOException {
 		serverSocket = new ServerSocket(port);
-		clientHandlers = new ArrayList<>();
-		gameHandlers = new ArrayList<>();
+		clientHandlers = new CopyOnWriteArrayList<>();
+		gameHandlers = new CopyOnWriteArrayList<>();
 		System.out.println("Server started");
 	}
 	
@@ -112,4 +113,5 @@ public class Server {
 		} else
 			return false;
 	}
+	
 }

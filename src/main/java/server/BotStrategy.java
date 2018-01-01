@@ -1,6 +1,7 @@
 package server;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 import board.BoardSixFour;
 import board.BoardSixSix;
@@ -47,4 +48,9 @@ public abstract class BotStrategy {
 	}
 	
 	public abstract MoveRequest getBestMove();
+	public abstract MoveRequest getBestMoveFromPoint(Point from);
+	public abstract MoveRequest getBestMove(ArrayList<Point> possibleMoves);
+	public void endTurn(int playerID) {
+		game.endTurn(playerID);
+	}
 }
