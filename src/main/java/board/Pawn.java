@@ -14,12 +14,16 @@ public class Pawn {
 	private Point lastLocation;
 	private String target;
 	private boolean isInTarget;
+	private boolean isInMove;
+	private boolean isAfterStep;
 	
 	public Pawn(Point coords, String target) {
 		this.location = coords;
 		this.lastLocation = coords;
 		this.target = target;
 		this.isInTarget = false;
+		this.isInMove = false;
+		this.isAfterStep = false;
 	}
 	
 	public Pawn(Pawn p) {
@@ -59,6 +63,30 @@ public class Pawn {
 	
 	public void setLastLocation(Point lastLocation) {
 		this.lastLocation = lastLocation;
+	}
+	
+	public void setInMove() {
+		isInMove = true;
+	}
+	
+	public void setNotInMove() {
+		isInMove = false;
+	}
+	
+	public boolean isInMove() {
+		return isInMove;
+	}
+	
+	public void setAfterStep() {
+		isAfterStep = true;
+	}
+	
+	public void setNotAfterStep() {
+		isAfterStep = false;
+	}
+	
+	public boolean isAfterStep() {
+		return isAfterStep;
 	}
 
 }

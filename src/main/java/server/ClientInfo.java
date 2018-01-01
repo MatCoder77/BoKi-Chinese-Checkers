@@ -31,7 +31,7 @@ public class ClientInfo implements Serializable{
 		this.playerID = playerID;
 	}
 	
-	int getPlayerID() {
+	public int getPlayerID() {
 		return playerID;
 	}
 }

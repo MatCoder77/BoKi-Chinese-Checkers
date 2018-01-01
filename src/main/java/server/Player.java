@@ -71,5 +71,12 @@ public class Player {
 	public MoveType getMoveType() {
 		return moveType;
 	}
+	
+	public void endTurn() {
+		for(Pawn p : pawns) {
+			p.setNotInMove();
+			p.setNotAfterStep();
+		}
+	}
 
 }
