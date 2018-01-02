@@ -45,6 +45,10 @@ public class Game {
 		}
 	}
 	
+	Field getField(int x, int y) {
+		return board[x][y];
+	}
+	
 	synchronized public void addPlayer() {
 		Player player = new Player(currentPlayer, corners[currentPlayer]);
 		player.setPawns(getPawns(corners[currentPlayer]));
@@ -296,7 +300,7 @@ public class Game {
 		players.get(PlayerID).endTurn();
 	}
 	
-	private boolean isEmpty(int x, int y) {
+	public boolean isEmpty(int x, int y) {
 		if(x < 0 || x >= boardHeight || y < 0 || y >= boardWidth) {
 			return false;
 		}
