@@ -81,7 +81,7 @@ public class Server {
 		return gameHandler; //CHANGE IT
 	}
 		
-	GameHandler runFastGame(ClientHandler client, GameType gameType) {
+	synchronized GameHandler runFastGame(ClientHandler client, GameType gameType) {
 		if(gameHandlers.size() != 0) {
 			for(GameHandler game : gameHandlers) {
 				if(game.waitsForPlayers() && (gameType.getPlayersNumber() == game.getGameInfo().getType().getPlayersNumber())) {
@@ -94,7 +94,7 @@ public class Server {
 		return runGameHandler(gameType, client); //CHANE IT
 	}
 	
-	GameHandler runComputerGame(ClientHandler client, GameType gameType) {
+	synchronized GameHandler runComputerGame(ClientHandler client, GameType gameType) {
 		GameHandler gameHandler = runGameHandler(gameType, client);
 		Bot bot;
 		for(int i = 1; i < gameType.getPlayersNumber(); i++) {
@@ -106,7 +106,7 @@ public class Server {
 		return gameHandler;
 	}
 	
-	boolean joinToGame(GameHandler game, ClientHandler client) {
+	synchronized boolean joinToGame(GameHandler game, ClientHandler client) {
 		if(game.waitsForPlayers()) {
 			game.addClient(client);
 			return true;

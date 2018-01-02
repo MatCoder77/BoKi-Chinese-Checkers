@@ -188,18 +188,18 @@ public class ResponseHandler extends CommandHandler {
 	public void handle(SomeoneJoinedResponse response) {
 		/*client.getClientGUI().addToLog("User " + response.getClientInfo().getName() + ", ID: "
 				+ response.getClientInfo().getID() + " joined your game");*/
-		client.getClientWindow().setInfoFromServer("User " + response.getClientInfo().getName() + ", ID: "
-				+ response.getClientInfo().getID() + " joined your game");
+		/*client.getClientWindow().setInfoFromServer("User " + response.getClientInfo().getName() + ", ID: "
+				+ response.getClientInfo().getID() + " joined your game");*/
 	}
 
 	public void handle(SomeoneLeftResponse response) {
 		/*client.getClientGUI().addToLog("User " + response.getClientInfo().getName() + ", ID: "
 				+ response.getClientInfo().getID() + " left game");*/
-		client.getClientWindow().setInfoFromServer("User " + response.getClientInfo().getName() + ", ID: "
-				+ response.getClientInfo().getID() + " left game");
+		/*client.getClientWindow().setInfoFromServer("User " + response.getClientInfo().getName() + ", ID: "
+				+ response.getClientInfo().getID() + " left game");*/
 	}
 
-	public void handle(GameStartedResponse repsonse) {
+	public void handle(GameStartedResponse response) {
 		//client.getClientGUI().addToLog("GAME STARTED");
 		//client.getMenuSecond().openFastGameWindow();
 		//client.getClientWindow().setInfoFromServer("GAME STARTED");
@@ -216,7 +216,7 @@ public class ResponseHandler extends CommandHandler {
 
 	public void handle(LeaveGameResponse response) {
 		//client.getClientGUI().addToLog("You left game");
-		client.getClientWindow().setInfoFromServer("You left game");
+		//client.getClientWindow().setInfoFromServer("You left game");
 	}
 	
 	public void handle(WinResponse response) {

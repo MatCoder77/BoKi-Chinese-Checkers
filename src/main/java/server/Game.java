@@ -45,7 +45,7 @@ public class Game {
 		}
 	}
 	
-	public void addPlayer() {
+	synchronized public void addPlayer() {
 		Player player = new Player(currentPlayer, corners[currentPlayer]);
 		player.setPawns(getPawns(corners[currentPlayer]));
 		players.add(player);
