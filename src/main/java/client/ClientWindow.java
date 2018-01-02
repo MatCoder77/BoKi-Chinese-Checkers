@@ -12,7 +12,10 @@ public class ClientWindow extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("MenuFirst.fxml"));
         primaryStage.setTitle("BoKi Chinese Checkers");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+		//scene.getStylesheets().add(SampleController.class.getResource("application.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.show();
 	}
 	

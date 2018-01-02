@@ -39,13 +39,15 @@ public class MenuFirstController {
 		}
 		System.out.println(tmpName + tmpAddress + tmpPort);
 		
-		Stage stage=(Stage) button.getScene().getWindow();
+		Stage stage = (Stage)button.getScene().getWindow();
 		
 		client = new Client(tmpAddress, tmpPort, tmpName);
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MenuSecond.fxml"));
 		try {
-			stage.setScene(new Scene((Pane) loader.load()));
+			Scene scene = new Scene((Pane) loader.load());
+			scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+			stage.setScene(scene);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -6,7 +6,6 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 
 public class BoardField extends Group {
 	
@@ -16,7 +15,7 @@ public class BoardField extends Group {
 	private boolean isActive;
 	private boolean isSelected;
 	private boolean isPossible;
-	Rectangle rect;
+	private Circle pointer;
 	
 	public BoardField(double radius) {
 		circle = new Circle(radius);
@@ -25,7 +24,7 @@ public class BoardField extends Group {
 	
 	public BoardField(double radius, Point location, String fieldType) {
 		circle = new Circle(radius);
-		rect = new Rectangle(5, 5);
+		pointer = new Circle(5, Color.BLACK);
 		this.getChildren().add(circle);
 		this.location = location;
 		this.fieldType = fieldType;
@@ -64,26 +63,26 @@ public class BoardField extends Group {
 	
 	public void activate() {
 		isActive = true;
-		//this.getChildren().add(rect);
+		//this.getChildren().add(pointer);
 	}
 	
 	public void deactivate() {
 		isActive = false;
 		setImpossible();
 		deselect();
-		//this.getChildren().remove(rect);
+		//this.getChildren().remove(pointer);
 	}
 	
 	public void setPossible() {
 		isPossible = true;
-		this.getChildren().add(rect);
-		//rect.setFill(Color.BLUE);
+		this.getChildren().add(pointer);
+		//pointer.setFill(Color.BLUE);
 	}
 	
 	public void setImpossible() {
 		isPossible = false;
-		this.getChildren().remove(rect);
-		//rect.setFill(Color.BLACK);
+		this.getChildren().remove(pointer);
+		//pointer.setFill(Color.BLACK);
 	}
 	
 	public boolean isPossible() {
@@ -92,12 +91,12 @@ public class BoardField extends Group {
 	
 	public void select() {
 		isSelected = true;
-		//this.getChildren().add(rect);
+		//this.getChildren().add(pointer);
 	}
 	
 	public void deselect() {
 		isSelected = false;
-		//this.getChildren().remove(rect);
+		//this.getChildren().remove(pointer);
 	}
 	
 	public boolean isSelected() {

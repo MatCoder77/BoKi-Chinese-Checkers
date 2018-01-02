@@ -167,6 +167,12 @@ public class ResponseHandler extends CommandHandler {
 		}
 		client.getClientWindow().setInfoFromServer("Connected players: " + players);*/
 		//client.getMenuSecond().setMessage("State: " + response.getGameState().toString());
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				client.getMenuSecond().setMessage("Waiting for other players");
+			}
+		});
 		
 	}
 	
@@ -182,6 +188,12 @@ public class ResponseHandler extends CommandHandler {
 			players += c.getName() + ", ";
 		}
 		client.getClientWindow().setInfoFromServer("Connected players: " + players);*/
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				client.getMenuSecond().setMessage("Game will start soon");
+			}
+		});
 	}
 
 
@@ -190,6 +202,12 @@ public class ResponseHandler extends CommandHandler {
 				+ response.getClientInfo().getID() + " joined your game");*/
 		/*client.getClientWindow().setInfoFromServer("User " + response.getClientInfo().getName() + ", ID: "
 				+ response.getClientInfo().getID() + " joined your game");*/
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				client.getMenuSecond().setMessage(response.getClientInfo().getName() + " joined the game");
+			}
+		});
 	}
 
 	public void handle(SomeoneLeftResponse response) {
@@ -197,6 +215,12 @@ public class ResponseHandler extends CommandHandler {
 				+ response.getClientInfo().getID() + " left game");*/
 		/*client.getClientWindow().setInfoFromServer("User " + response.getClientInfo().getName() + ", ID: "
 				+ response.getClientInfo().getID() + " left game");*/
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				client.getGameWindow().setMessage(response.getClientInfo().getName() + " left game");
+			}
+		});
 	}
 
 	public void handle(GameStartedResponse response) {
@@ -205,28 +229,43 @@ public class ResponseHandler extends CommandHandler {
 		//client.getClientWindow().setInfoFromServer("GAME STARTED");
 		int playerID = response.getClientInfo(client.getID()).getPlayerID();
 		Platform.runLater(new Runnable() {
-			
 			@Override
 			public void run() {
 				client.getMenuSecond().openGameWindow(playerID);
 			}
 		});
-		
 	}
 
 	public void handle(LeaveGameResponse response) {
 		//client.getClientGUI().addToLog("You left game");
 		//client.getClientWindow().setInfoFromServer("You left game");
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				client.getGameWindow().setMessage("You left game");
+			}
+		});
 	}
 	
 	public void handle(WinResponse response) {
 		if(response.getWinner().getID() == client.getID()) {
 			//client.getClientGUI().addToLog("You won!");
-			client.getClientWindow().setInfoFromServer("You won!");
+			//client.getClientWindow().setInfoFromServer("You won!");
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					client.getGameWindow().setMessage("You won!");
+				}
+			});
 		}
 		else {
 			//client.getClientGUI().addToLog(response.getWinner().getName() + "won");
-			client.getClientWindow().setInfoFromServer(response.getWinner().getName() + "won");
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					client.getGameWindow().setMessage(response.getWinner().getName() + " won");
+				}
+			});
 		}
 	}
 

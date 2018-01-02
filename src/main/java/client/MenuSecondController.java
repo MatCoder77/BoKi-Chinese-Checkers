@@ -133,7 +133,9 @@ public class MenuSecondController {
 		//Stage stage = (Stage)startGamePlayers.getScene().getWindow();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
 		try {
-			stage.setScene(new Scene((Pane) loader.load()));
+			Scene scene = new Scene((Pane) loader.load());
+			scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+			stage.setScene(scene);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
