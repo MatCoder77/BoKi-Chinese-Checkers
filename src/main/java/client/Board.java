@@ -81,7 +81,6 @@ public class Board {
 				}
 				else if(empty[i][j] == true) {
 					boardFields[i][j] = new BoardField(radius, new Point(i, j), "C");
-					//boardFields[i][j].setFill(Color.DARKGRAY);
 					boardFields[i][j].setFill(Color.rgb(201, 128, 64, 0.3));
 					boardFields[i][j].addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
 					boardFields[i][j].addEventFilter(MouseEvent.MOUSE_ENTERED, mouseEntered);
@@ -94,27 +93,21 @@ public class Board {
 					boardFields[i][j].addEventFilter(MouseEvent.MOUSE_EXITED, mouseExited);
 					
 					if(board[i][j].equals("1")) {
-						//boardFields[i][j].setFill(Color.AQUA);
 						boardFields[i][j].setFill(Color.rgb(216, 36, 36));
 					}
 					else if(board[i][j].equals("2")) {
-						//boardFields[i][j].setFill(Color.BLUEVIOLET);
 						boardFields[i][j].setFill(Color.rgb(48, 41, 41));
 					}
 					else if(board[i][j].equals("3")) {
-						//boardFields[i][j].setFill(Color.CHOCOLATE);
 						boardFields[i][j].setFill(Color.rgb(239, 219, 2));
 					}
 					else if(board[i][j].equals("4")) {
-						//boardFields[i][j].setFill(Color.DARKGREEN);
 						boardFields[i][j].setFill(Color.rgb(4, 166, 206));
 					}
 					else if(board[i][j].equals("5")) {
-						//boardFields[i][j].setFill(Color.TOMATO);
 						boardFields[i][j].setFill(Color.rgb(247, 244, 244));
 					}
 					else if(board[i][j].equals("6")) {
-						//boardFields[i][j].setFill(Color.DARKOLIVEGREEN);
 						boardFields[i][j].setFill(Color.rgb(11, 142, 0));
 					}
 					if(board[i][j].equals(playerCorner)) {
@@ -123,8 +116,6 @@ public class Board {
 				}
 			}
 		}
-		//activatePlayerFields();
-		//deactivatePlayerFields();
 	}
 	
 	public BoardField[][] getBoardFields() {
@@ -134,7 +125,6 @@ public class Board {
 	public void activatePlayerFields() {
 		for(BoardField pf : playerFields) {
 			pf.activate();
-			//pf.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
 		}
 	}
 	

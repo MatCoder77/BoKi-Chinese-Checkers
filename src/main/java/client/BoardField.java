@@ -63,26 +63,22 @@ public class BoardField extends Group {
 	
 	public void activate() {
 		isActive = true;
-		//this.getChildren().add(pointer);
 	}
 	
 	public void deactivate() {
 		isActive = false;
 		setImpossible();
 		deselect();
-		//this.getChildren().remove(pointer);
 	}
 	
 	public void setPossible() {
 		isPossible = true;
 		this.getChildren().add(pointer);
-		//pointer.setFill(Color.BLUE);
 	}
 	
 	public void setImpossible() {
 		isPossible = false;
 		this.getChildren().remove(pointer);
-		//pointer.setFill(Color.BLACK);
 	}
 	
 	public boolean isPossible() {
@@ -91,12 +87,10 @@ public class BoardField extends Group {
 	
 	public void select() {
 		isSelected = true;
-		//this.getChildren().add(pointer);
 	}
 	
 	public void deselect() {
 		isSelected = false;
-		//this.getChildren().remove(pointer);
 	}
 	
 	public boolean isSelected() {

@@ -21,8 +21,11 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextField fx:id="name" promptText="Wpisz swoje imię" GridPane.columnIndex="1" />
-      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Imię:">
+      <TextField fx:id="name" promptText="Enter your name" GridPane.columnIndex="1">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Name:">
          <font>
             <Font size="14.0" />
          </font></Label>
@@ -31,7 +34,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label maxWidth="1.7976931348623157E308" text="Adres:" GridPane.rowIndex="2">
+      <Label maxWidth="1.7976931348623157E308" text="Address" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font>
@@ -44,8 +47,11 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="address" text="localhost" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Button fx:id="button" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" text="Połącz z serwerem" GridPane.columnSpan="2" GridPane.rowIndex="3">
+      <TextField fx:id="address" text="localhost" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <Button fx:id="button" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" text="Connect to server" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <font>
             <Font size="14.0" />
          </font>

@@ -14,7 +14,6 @@ public class ClientWindow extends Application {
         primaryStage.setTitle("BoKi Chinese Checkers");
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-		//scene.getStylesheets().add(SampleController.class.getResource("application.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
 	}

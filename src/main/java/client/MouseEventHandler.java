@@ -16,9 +16,7 @@ public class MouseEventHandler implements EventHandler<MouseEvent> {
 	@Override
 	public void handle(MouseEvent event) {
 		BoardField boardField = (BoardField)event.getSource();
-	//	System.out.println(boardField.getLocation());
 		if(boardField.isActive()) {
-			System.out.println(boardField.getLocation());
 			if(boardField.isPossible()) {
 				// TODO send move
 				BoardField from = client.getBoard().getSelected();

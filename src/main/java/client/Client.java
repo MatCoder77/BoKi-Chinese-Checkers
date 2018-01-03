@@ -148,7 +148,6 @@ public class Client {
 		try {
 			output.writeObject(request);
 			output.flush();
-			System.out.println("Sended request");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

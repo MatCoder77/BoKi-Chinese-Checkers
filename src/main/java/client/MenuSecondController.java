@@ -2,23 +2,18 @@ package client;
 
 import java.io.IOException;
 
-import board.BoardType;
+import communication.DisconnectRequest;
 import communication.StartComputerGameRequest;
 import communication.StartFastGameRequest;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -48,6 +43,9 @@ public class MenuSecondController {
 	private Button startGamePlayers;
 	
 	@FXML
+	private Button disconnect;
+	
+	@FXML
 	private ComboBox<Integer> botsSize;
 	
 	@FXML
@@ -58,7 +56,6 @@ public class MenuSecondController {
 	
 	@FXML
 	private void initialize() {
-		
 		playersSize = new ComboBox<>();
 		playersSize.getItems().removeAll(playersSize.getItems());
 		playersSize.getItems().addAll(2, 3, 4, 6);
@@ -78,21 +75,8 @@ public class MenuSecondController {
 	
 	@FXML
 	private void handleStartGameBots(ActionEvent event) {
-		/*Stage stage=(Stage) startGameBots.getScene().getWindow();
-		//Parent root = null;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("FastGame.fxml"));
-		try {
-			stage.setScene(new Scene((Pane) loader.load()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		FastGameController controller = loader.<FastGameController>getController();
-		client.setFastGame(controller);
-		controller.setClient(client);
-		System.out.println(client.getName());
-		client.sendRequest(new StartComputerGameRequest(client.getName(), new GameType(botsSize.getValue(), BoardSize.STANDARD)));
-		stage.show();*/
+		startGameBots.setDisable(true);
+		startGamePlayers.setDisable(true);
 		gameType = "BOTS";
 		numOfBots = botsSize.getValue();
 		client.sendRequest(new StartComputerGameRequest(client.getName(), new GameType(numOfBots, BoardSize.STANDARD)));
@@ -100,27 +84,28 @@ public class MenuSecondController {
 	
 	@FXML
 	private void handleStartGamePlayers(ActionEvent event) {
-		/*stage = (Stage)startGamePlayers.getScene().getWindow();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("FastGame.fxml"));
-		try {
-			stage.setScene(new Scene((Pane) loader.load()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		FastGameController controller = loader.<FastGameController>getController();
-		client.setFastGame(controller);
-		controller.setClient(client);
-		System.out.println(client.getName());
-		
-		client.sendRequest(new StartFastGameRequest(client.getName(), new GameType(playersSize.getValue(), BoardSize.STANDARD)));
-		
-		stage.show();*/
-		//openGameWindow();
+		startGameBots.setDisable(true);
+		startGamePlayers.setDisable(true);
 		gameType = "PLAYERS";
 		numOfPlayers = playersSize.getValue();
 		client.sendRequest(new StartFastGameRequest(client.getName(), new GameType(numOfPlayers, BoardSize.STANDARD)));
 		
+	}
+	
+	@FXML
+	private void handleDisconnect(ActionEvent event) {
+		client.sendRequest(new DisconnectRequest(client.getName()));
+		stage = (Stage)disconnect.getScene().getWindow();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("MenuFirst.fxml"));
+		try {
+			Scene scene = new Scene((Pane) loader.load());
+			scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+			stage.setScene(scene);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		stage.show();
 	}
 	
 	public void openGameWindow(int playerID) {
@@ -130,8 +115,9 @@ public class MenuSecondController {
 		else {
 			stage = (Stage)startGamePlayers.getScene().getWindow();
 		}
-		//Stage stage = (Stage)startGamePlayers.getScene().getWindow();
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
+		
 		try {
 			Scene scene = new Scene((Pane) loader.load());
 			scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -143,47 +129,25 @@ public class MenuSecondController {
 		GameWindowController controller = loader.<GameWindowController>getController();
 		MouseEventHandler mouseHandler = new MouseEventHandler(client);
 		Board board = null;
+		
 		if (gameType.equals("BOTS")) {
 			board = new Board(numOfBots, playerID, mouseHandler);
 		}
 		else {
 			board = new Board(numOfPlayers, playerID, mouseHandler);
 		}
-		//Board board = new Board(numOfPlayers, playerID, mouseHandler);
-		controller.setBoard(board);
-		controller.showBoard();
-		client.setBoard(board);
-		client.setGameWindow(controller);
-		controller.setClient(client);
-		System.out.println(client.getName());
-		stage.show();
-	}
-	
-	public void openComputerGameWindow(int playerID) {
-		Stage stage = (Stage)startGameBots.getScene().getWindow();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindow.fxml"));
-		try {
-			stage.setScene(new Scene((Pane) loader.load()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
-		GameWindowController controller = loader.<GameWindowController>getController();
-		MouseEventHandler mouseHandler = new MouseEventHandler(client);
-		Board board = new Board(numOfBots, playerID, mouseHandler);
 		controller.setBoard(board);
 		controller.showBoard();
 		client.setBoard(board);
 		client.setGameWindow(controller);
 		controller.setClient(client);
-		System.out.println(client.getName());
 		stage.show();
 	}
 	
 	public void setClient(Client client) {
 		this.client = client;
-		System.out.println(this.client.connect());
-		System.out.println(this.client.isConnected());
+		this.client.connect();
 	}
 	
 	public void setMessage(String text) {
