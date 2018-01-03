@@ -213,4 +213,12 @@ public class Board {
 		second.setFill(fill);
 	}
 	
+	public ArrayList<BoardField> getPlayerFields() {
+		return playerFields;
+	}
+	
+	public ArrayList<BoardField> getPossibleMoves() {
+		return possibleMoves;
+	}
+	
 }
