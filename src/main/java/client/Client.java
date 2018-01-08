@@ -22,9 +22,7 @@ public class Client {
 	private boolean connected;
 	private String name;
 	private int ID;
-	private ClientGUI clientGUI;
 	private MenuSecondController menuSecond;
-	private FastGameController fastGame;
 	private GameWindowController gameWindow;
 	private Board board;
 
@@ -32,14 +30,6 @@ public class Client {
 		this.address = address;
 		this.port = port;
 		this.name = name;
-	}
-	
-	void setClientGUI(ClientGUI clientGUI) {
-		this.clientGUI = clientGUI;
-	}
-	
-	ClientGUI getClientGUI() {
-		return clientGUI;
 	}
 
 	/**
@@ -150,7 +140,6 @@ public class Client {
 		try {
 			output.writeObject(request);
 			output.flush();
-			System.out.println("Sended request");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -165,17 +154,8 @@ public class Client {
 		return ID;
 	}
 	
-	public void setFastGame(FastGameController fastGame) {
-		this.fastGame = fastGame;
-		this.fastGame.setInfoFromServer("Hello world");
-	}
-	
 	public String getName() {
 		return name;
-	}
-	
-	public FastGameController getClientWindow() {
-		return fastGame;
 	}
 	
 	public void setMenuSecond(MenuSecondController menuSecond) {

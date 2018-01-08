@@ -1,7 +1,11 @@
 package client;
 
 import java.io.IOException;
+
+import communication.DisconnectRequest;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 public class MenuFirstController {
@@ -37,11 +42,20 @@ public class MenuFirstController {
 		} catch (NumberFormatException ex) {
 			System.out.println(ex.getMessage());
 		}
-		System.out.println(tmpName + tmpAddress + tmpPort);
 		
 		Stage stage = (Stage)button.getScene().getWindow();
 		
 		client = new Client(tmpAddress, tmpPort, tmpName);
+		
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			
+			@Override
+			public void handle(WindowEvent event) {
+				if(client.isConnected())
+					client.sendRequest(new DisconnectRequest(client.getName()));
+				Platform.exit();
+			}
+		});
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MenuSecond.fxml"));
 		try {
@@ -56,16 +70,5 @@ public class MenuFirstController {
 		client.setMenuSecond(controller);
 		controller.setClient(client);
 		stage.show();
-		
-		/*Parent root = null;
-		try {
-			root = FXMLLoader.load(getClass().getResource("MenuSecond.fxml"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();*/
 	}
 }

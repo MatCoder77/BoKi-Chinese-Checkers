@@ -36,20 +36,6 @@ public class GameWindowController {
 	
 	@FXML
 	private void initialize() {
-		//board = new Board(6, 1);
-		/*boardFields = board.getBoardFields();
-		vbox.setAlignment(Pos.CENTER);
-		vbox.setSpacing(2);
-		for (int i = 0 ; i < boardFields.length; i++) {
-			HBox hbox = new HBox(5);
-			hbox.setAlignment(Pos.CENTER);
-			for (int j = 0 ; j < boardFields[i].length ; j++) {
-				if(!boardFields[i][j].getFieldType().equals("N")) {
-					hbox.getChildren().add(boardFields[i][j]);
-				}
-			}
-			vbox.getChildren().add(hbox);
-		}*/
 		deactivateEndTurn();
 	}
 	
@@ -77,7 +63,6 @@ public class GameWindowController {
 		client.setMenuSecond(controller);
 		controller.setClient(client);
 		stage.show();
-		//System.exit(0);
 	}
 	
 	public void setBoard(Board board) {
