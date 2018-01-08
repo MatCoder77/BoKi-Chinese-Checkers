@@ -76,7 +76,7 @@
   </enumeration>  
   <class id="9" language="java" name="server.Game" project="BoKi-Chinese-Checkers" 
     file="/BoKi-Chinese-Checkers/src/main/java/server/Game.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="181" y="279"/>    
+    <position height="-1" width="-1" x="174" y="278"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="true" private="false" static="true"/>      

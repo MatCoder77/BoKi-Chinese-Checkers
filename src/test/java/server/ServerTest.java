@@ -2,17 +2,15 @@ package server;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import client.Client;
-import communication.ConnectRequest;
-import communication.DisconnectRequest;
-import communication.StartFastGameRequest;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import server.Server;
-import server.GameType.BoardSize;
 
 public class ServerTest {
 	static Thread serverThread;
@@ -51,7 +49,7 @@ public class ServerTest {
 	}
 	
 	@Test
-	public void clientConnection() {
+	public void clientConnection() throws UnknownHostException, IOException {
 		Thread serverThread = new Thread(new ServerRunner());
 		serverThread.start();
 		Client client = new Client("localhost", 8988, "User1");
@@ -61,7 +59,7 @@ public class ServerTest {
 	}
 	
 	@Test
-	public void manyClientsConnection() {
+	public void manyClientsConnection() throws UnknownHostException, IOException {
 		Client c1 = new Client("localhost", 8988, "C1");
 		Client c2 = new Client("localhost", 8988, "C1");
 		Client c3 = new Client("localhost", 8988, "C1");
