@@ -1,6 +1,7 @@
 package client;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import communication.DisconnectRequest;
 import javafx.application.Platform;
@@ -33,7 +34,11 @@ public class MenuFirstController {
 	private TextField port;
 	
 	@FXML
+	private TextField message;
+	
+	@FXML
 	private void handleButtonAction(ActionEvent event) {
+		message.setText("Connecting to server");
 		String tmpName = name.getText();
 		String tmpAddress = address.getText();
 		int tmpPort = 8988;
@@ -46,6 +51,16 @@ public class MenuFirstController {
 		Stage stage = (Stage)button.getScene().getWindow();
 		
 		client = new Client(tmpAddress, tmpPort, tmpName);
+		
+		try {
+			client.connect();
+		} catch (UnknownHostException e1) {
+			message.setText("Invalid host");
+			return;
+		} catch (IOException e2) {
+			message.setText("Connecting to server failed");
+			return;
+		}
 		
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			

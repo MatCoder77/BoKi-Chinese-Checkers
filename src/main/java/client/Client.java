@@ -91,24 +91,17 @@ public class Client {
 	 * 
 	 * @return true if connection was established, false if some kind of problem
 	 *         occurred
+	 * @throws IOException 
+	 * @throws UnknownHostException 
 	 */
-	public boolean connect() {
+	public boolean connect() throws UnknownHostException, IOException {
 		if (!isConnected()) {
-			try {
-				socket = createSocket();
-				/*
-				output = new ObjectOutputStream(socket.getOutputStream());
-				input = new ObjectInputStream(socket.getInputStream());	*/
-				output = createOutputStream();
-				input = createInputStream();
-				runServerListener();
-				sendRequest(new ConnectRequest(name));
-				setConnected(true);
-			} catch (Exception ex) {
-				
-			}
-
-
+			socket = createSocket();
+			output = createOutputStream();
+			input = createInputStream();
+			runServerListener();
+			sendRequest(new ConnectRequest(name));
+			setConnected(true);
 		} else {
 			
 		}
