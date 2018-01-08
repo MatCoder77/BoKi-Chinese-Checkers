@@ -28,7 +28,7 @@ public class GameIntegrationalTest {
 
 	@Test
 	public void startingServer() {
-		//fail("Not yet implemented");
+		
 	}
 
 }

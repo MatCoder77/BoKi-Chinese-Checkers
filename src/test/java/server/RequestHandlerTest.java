@@ -15,12 +15,12 @@ public class RequestHandlerTest {
 	static RequestHandler handler;
 	ClientHandler clientHandler;
 	
-//	@BeforeClass
-//	public static void setUpBeforeClass() throws Exception {
-//		ClientHandler clientHandler = new ClientHandler(null);
+//ClientHandler clientHandler = new ClientHandler(null);
 //		handler = new RequestHandler(clientHandler)
 //	}
-//
+//	@BeforeClass
+//	public static void setUpBeforeClass() throws Exception {
+//		
 //	@AfterClass
 //	public static void tearDownAfterClass() throws Exception {
 //	}

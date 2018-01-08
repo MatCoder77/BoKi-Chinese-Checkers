@@ -2,6 +2,9 @@ package server;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import board.BoardType;
 import board.Field;
 import board.Pawn;
@@ -18,8 +21,8 @@ public class Game {
 	private Field board[][];
 	private int boardHeight, boardWidth;
 	private int[] corners;
-	private int currentPlayer;
-	private ArrayList<Player> players;
+	private AtomicInteger currentPlayer;
+	private CopyOnWriteArrayList<Player> players;
 	
 	/**
 	 * @param boardType type of board to set
@@ -29,12 +32,12 @@ public class Game {
 		String[][] tmpBoard = boardType.getBoard();
 		boolean[][] tmpEmpty = boardType.getBoardEmpty();
 		
-		this.currentPlayer = 0;
+		this.currentPlayer = new AtomicInteger(0);
 		this.boardHeight = tmpBoard.length;
 		this.boardWidth = tmpBoard[0].length;
 		this.board = new Field[boardHeight][boardWidth];
 		this.corners = boardType.getCorners();
-		this.players = new ArrayList<>();
+		this.players = new CopyOnWriteArrayList<>();
 		
 		for(int i = 0; i < tmpBoard.length; i++) {
 			for(int j = 0; j < tmpBoard[i].length; j++) {
@@ -50,10 +53,10 @@ public class Game {
 	}
 	
 	synchronized public void addPlayer() {
-		Player player = new Player(currentPlayer, corners[currentPlayer]);
-		player.setPawns(getPawns(corners[currentPlayer]));
+		Player player = new Player(currentPlayer.get(), corners[currentPlayer.get()]);
+		player.setPawns(getPawns(corners[currentPlayer.get()]));
 		players.add(player);
-		currentPlayer++;
+		currentPlayer.incrementAndGet();
 	}
 	
 	public ArrayList<Point> checkValidMoves(int clientIndex, Point point) {

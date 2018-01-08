@@ -3,6 +3,7 @@ package server;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,7 +34,7 @@ import communication.WinResponse;
 
 public class GameHandler implements Runnable {
 
-	private ArrayList<ClientHandler> clients;
+	private CopyOnWriteArrayList<ClientHandler> clients;
 	private BlockingQueue<GameplayRequest> receivedRequests;
 	private Thread gameThread;
 	private volatile GameInfo gameInfo;
@@ -44,7 +45,7 @@ public class GameHandler implements Runnable {
 	private boolean turnEnded = false;
 
 	public GameHandler(GameType gameType, ClientHandler creator) {
-		clients = new ArrayList<>();
+		clients = new CopyOnWriteArrayList<>();
 		receivedRequests = new LinkedBlockingQueue<>();
 		gameInfo = new GameInfo(gameCounter.getAndIncrement(), "Game", gameType, GameState.WAITING_FOR_PLAYERS,
 				new ArrayList<>());

@@ -39,7 +39,7 @@ public class GameHandlerTest {
 	}
 	
 	private void addClientsToGame(GameHandler gameHandler, int number) {
-		for(int i = 0; i < gameHandler.getExpectedClientsNumber(); i++) {
+		for(int i = 0; i < number; i++) {
 			gameHandler.addClient(new FakeClientHandler());
 		}
 	}

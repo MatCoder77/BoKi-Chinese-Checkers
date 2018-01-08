@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import communication.ConnectRequest;
 import communication.DisconnectRequest;
@@ -75,9 +76,6 @@ public class Client {
 				while((receivedObject = input.readObject()) != null) {
 					response = (Response) receivedObject;
 					response.accept(handler);
-//					if(receivedObject instanceof ConnectResponse) {
-//						System.out.println("You were succesfully connected");
-//					}
 				}
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
@@ -107,7 +105,7 @@ public class Client {
 	public boolean connect() {
 		if (!isConnected()) {
 			try {
-				socket = new Socket(address, port);
+				socket = createSocket();
 				output = new ObjectOutputStream(socket.getOutputStream());
 				input = new ObjectInputStream(socket.getInputStream());				
 				runServerListener();
@@ -122,6 +120,10 @@ public class Client {
 			// TODO show message "You're already connected"
 		}
 		return true; // TODO error indicating when something will go wrong
+	}
+	
+	Socket createSocket() throws UnknownHostException, IOException {
+		return new Socket(address, port);
 	}
 
 	/**

@@ -19,10 +19,14 @@ public class Server {
 	private CopyOnWriteArrayList<GameHandler> gameHandlers;
 
 	private Server (int port) throws IOException {
-		serverSocket = new ServerSocket(port);
+		serverSocket = createSocket(port);
 		clientHandlers = new CopyOnWriteArrayList<>();
 		gameHandlers = new CopyOnWriteArrayList<>();
 		System.out.println("Server started");
+	}
+	
+	ServerSocket createSocket(int port) throws IOException {
+		return new ServerSocket(port);
 	}
 	
 	public static synchronized Server getInstance() {
