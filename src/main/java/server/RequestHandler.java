@@ -75,6 +75,7 @@ public class RequestHandler extends CommandHandler {
 						+ clientHandler.getClientInfo().getID() + " opuszcza grę " + gameHandler.getGameInfo().getName()
 						+ ", ID: " + gameHandler.getGameInfo().getID());
 		gameHandler.removeClient(clientHandler);
+		clientHandler.leaveGame();
 		clientHandler.sendResponse(new LeaveGameResponse());
 	}
 

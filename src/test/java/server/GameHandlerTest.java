@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.net.Socket;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -22,8 +23,8 @@ public class GameHandlerTest {
 	static FakeClientHandler firstClient4;
 	static FakeClientHandler firstClient3;
 	static FakeClientHandler firstClient2;
-	@BeforeClass
-	static public void setUpBeforeClass() {
+	@Before
+	public void setUp() {
 		firstClient6 = new FakeClientHandler();
 		gameHandler6 = new GameHandler(new GameType(6, BoardSize.STANDARD), firstClient6);
 		gameHandler6.setGameThread(new Thread(gameHandler6));
@@ -69,16 +70,11 @@ public class GameHandlerTest {
 		assertEquals(GameState.STERTED, gameHandler3.getGameInfo().getState());
 		assertEquals(GameState.STERTED, gameHandler2.getGameInfo().getState());
 		
-//		gameHandler6.removeClient(firstClient6);
-//		gameHandler4.removeClient(firstClient4);
-//		gameHandler3.removeClient(firstClient3);
-//		gameHandler2.removeClient(firstClient2);
+		gameHandler6.removeClient(firstClient6);
+		gameHandler4.removeClient(firstClient4);
+		gameHandler3.removeClient(firstClient3);
+		gameHandler2.removeClient(firstClient2);
 		
-
-//		assertFalse(t6.isAlive());
-//		assertFalse(t4.isAlive());
-//		assertFalse(t3.isAlive());
-//		assertFalse(t2.isAlive());
 
 	}
 	/*@Test

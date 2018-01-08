@@ -79,6 +79,10 @@ public class ClientHandler implements Runnable {
 		this.game = game;
 		this.requestQueue = game.getRequestQueue();
 	}
+	
+	void leaveGame() {
+		game = null;
+	}
 
 	ClientInfo getClientInfo() {
 		return clientInfo;

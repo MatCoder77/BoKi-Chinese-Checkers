@@ -2,6 +2,7 @@ package server;
 
 import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -9,11 +10,12 @@ import client.Client;
 import communication.ConnectRequest;
 import communication.DisconnectRequest;
 import communication.StartFastGameRequest;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import server.Server;
 import server.GameType.BoardSize;
 
 public class ServerTest {
-	
+	static Thread serverThread;
 	public static class ServerRunner implements Runnable {
 		
 		public ServerRunner() {};
@@ -26,8 +28,12 @@ public class ServerTest {
 	}
 	@BeforeClass 
 	static public void runServer() {
-		Thread serverThread = new Thread(new ServerRunner());
+		serverThread = new Thread(new ServerRunner());
 		serverThread.start();
+	}
+	
+	@AfterClass static public void stopServer() {
+		serverThread.interrupt();
 	}
 
 	@Test
@@ -52,15 +58,6 @@ public class ServerTest {
 		client.connect();
 		assertTrue(client.isConnected());
 		//serverThread.interrupt();
-	}
-	
-	@Test
-	public void clientDisconnection() {
-		Client client = new Client("localhost", 8988, "User2");
-		client.connect();
-		assertTrue(client.isConnected());
-		client.disconnect();
-		assertFalse(client.isConnected());
 	}
 	
 	@Test

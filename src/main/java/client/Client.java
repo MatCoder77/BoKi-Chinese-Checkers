@@ -96,20 +96,31 @@ public class Client {
 		if (!isConnected()) {
 			try {
 				socket = createSocket();
+				/*
 				output = new ObjectOutputStream(socket.getOutputStream());
-				input = new ObjectInputStream(socket.getInputStream());				
+				input = new ObjectInputStream(socket.getInputStream());	*/
+				output = createOutputStream();
+				input = createInputStream();
 				runServerListener();
 				sendRequest(new ConnectRequest(name));
 				setConnected(true);
 			} catch (Exception ex) {
-				// TODO handle exception
+				
 			}
 
 
 		} else {
-			// TODO show message "You're already connected"
+			
 		}
-		return true; // TODO error indicating when something will go wrong
+		return true; 
+	}
+	
+	ObjectInputStream createInputStream() throws IOException {
+		return new ObjectInputStream(socket.getInputStream());	
+	}
+	
+	ObjectOutputStream createOutputStream() throws IOException {
+		return  new ObjectOutputStream(socket.getOutputStream());
 	}
 	
 	Socket createSocket() throws UnknownHostException, IOException {
@@ -127,13 +138,13 @@ public class Client {
 			try {
 				socket.close();
 			} catch (Exception ex) {
-				//TODO error handling
+		
 			}
 			setConnected(false);
 		} else {
-			//TODO show message "You're already disconnected"
+			
 		}
-		return true; //TODO error indicating
+		return true; 
 	}
 	
 	public void sendRequest(Request request) {
@@ -142,7 +153,7 @@ public class Client {
 			output.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
