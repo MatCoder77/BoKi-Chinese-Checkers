@@ -147,7 +147,6 @@ public class MenuSecondController {
 	
 	public void setClient(Client client) {
 		this.client = client;
-		this.client.connect();
 	}
 	
 	public void setMessage(String text) {
